@@ -38,7 +38,15 @@
   var badgeText = document.querySelector(".hero-badge-text");
   var badgeInner = document.querySelector(".hero-badge-text-inner");
   if (badgeText && badgeInner) {
-    badgeText.style.setProperty("--badge-text-w", badgeInner.offsetWidth + "px");
+    var measureBadge = function () {
+      // +2px of slack so sub-pixel rounding never clips the last glyph.
+      badgeText.style.setProperty("--badge-text-w", badgeInner.offsetWidth + 2 + "px");
+    };
+    measureBadge();
+    // The webfont almost never lands before this script runs, so the first
+    // measurement is taken in the fallback font and comes out too narrow.
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(measureBadge);
+    window.addEventListener("resize", measureBadge);
   }
 
   /* ---------- Split display headings into masked words ---------- */
