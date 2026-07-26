@@ -251,17 +251,46 @@
     });
   });
 
-  /* ---------- Contact form (client-side only) ---------- */
+  /* ---------- Contact form (Formspree) ---------- */
   var form = document.getElementById("contact-form");
   var status = document.getElementById("form-status");
   if (form) {
     form.addEventListener("submit", function (e) {
       e.preventDefault();
-      status.textContent = "Thanks — we'll be in touch shortly!";
-      status.classList.remove("pop");
-      void status.offsetWidth;
-      status.classList.add("pop");
-      form.reset();
+      var submitBtn = form.querySelector("button[type=submit]");
+      var showStatus = function (text) {
+        status.textContent = text;
+        status.classList.remove("pop");
+        void status.offsetWidth;
+        status.classList.add("pop");
+      };
+
+      if (submitBtn) submitBtn.disabled = true;
+      showStatus("Sending...");
+
+      fetch(form.action, {
+        method: "POST",
+        body: new FormData(form),
+        headers: { Accept: "application/json" }
+      }).then(function (response) {
+        if (response.ok) {
+          showStatus("Thanks — we'll be in touch shortly!");
+          form.reset();
+        } else {
+          response.json().then(function (data) {
+            var msg = data && data.errors && data.errors.length
+              ? data.errors.map(function (err) { return err.message; }).join(", ")
+              : "Something went wrong. Please try again or email us directly.";
+            showStatus(msg);
+          }).catch(function () {
+            showStatus("Something went wrong. Please try again or email us directly.");
+          });
+        }
+      }).catch(function () {
+        showStatus("Something went wrong. Please check your connection and try again.");
+      }).finally(function () {
+        if (submitBtn) submitBtn.disabled = false;
+      });
     });
   }
 })();
