@@ -124,6 +124,53 @@
   var swirl = document.querySelector(".hero-swirl");
   var parallaxPhotos = [].slice.call(document.querySelectorAll(".dark-card-photo"));
 
+  /* ---------- Process steps: spine geometry + scroll-driven fill ---------- */
+  var stepWrap = document.getElementById("step-wrap");
+  var stepList = document.getElementById("step-list");
+  var stepSpine = document.getElementById("step-spine");
+  var stepFill = document.getElementById("step-spine-fill");
+  var stepItems = stepList ? [].slice.call(stepList.children) : [];
+  // Distance from the top of a step row to the centre of its marker:
+  // 22px of padding + half of the 34px marker.
+  var MARKER_CENTER = 39;
+  var spineTop = 0, spineHeight = 0;
+
+  function layoutSpine() {
+    if (!stepItems.length) return;
+    var first = stepItems[0];
+    var last = stepItems[stepItems.length - 1];
+    spineTop = first.offsetTop + MARKER_CENTER;
+    spineHeight = last.offsetTop + MARKER_CENTER - spineTop;
+    stepSpine.style.top = spineTop + "px";
+    stepSpine.style.height = spineHeight + "px";
+  }
+
+  function updateSteps(vh) {
+    if (!stepItems.length || !spineHeight) return;
+    // Progress is measured against a line slightly below the viewport centre,
+    // so a step lights up as you reach it rather than after it has gone past.
+    var line = vh * 0.55;
+    var spineRect = stepSpine.getBoundingClientRect();
+    var p = (line - spineRect.top) / spineHeight;
+    p = p < 0 ? 0 : p > 1 ? 1 : p;
+    stepFill.style.height = (p * 100).toFixed(2) + "%";
+
+    var reached = -1;
+    stepItems.forEach(function (li, i) {
+      var center = li.getBoundingClientRect().top + MARKER_CENTER;
+      var done = center <= line;
+      li.classList.toggle("is-done", done);
+      if (done) reached = i;
+    });
+    stepItems.forEach(function (li, i) {
+      li.classList.toggle("is-active", i === reached);
+    });
+  }
+
+  if (stepItems.length && reduceMotion) {
+    stepItems.forEach(function (li) { li.classList.add("is-done"); });
+  }
+
   var ticking = false;
   function onScroll() {
     if (!ticking) {
@@ -151,11 +198,23 @@
         var p = (r.top + r.height / 2 - vh / 2) / vh;
         img.style.transform = "translateY(" + (p * -24).toFixed(1) + "px) scale(1.06)";
       });
+      updateSteps(vh);
     }
   }
   window.addEventListener("scroll", onScroll, { passive: true });
-  window.addEventListener("resize", onScroll);
+  window.addEventListener("resize", function () {
+    layoutSpine();
+    onScroll();
+  });
+  layoutSpine();
   updateScroll();
+  // Rows are laid out before the webfont swaps, so remeasure once it lands.
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(function () {
+      layoutSpine();
+      updateScroll();
+    });
+  }
 
   /* ---------- Carousel: arrows, drag-to-scroll, gentle autoplay ---------- */
   var track = document.getElementById("carousel-track");

@@ -738,24 +738,33 @@ ul { margin: 0; padding: 0; }
   border-top: 1px solid var(--line-soft);
 }
 .step-list li:last-child { border-bottom: 1px solid var(--line-soft); }
-/* Connector running from each number down to the next, filling as the step reveals. */
-.step-list li:not(:last-child)::after {
-  content: "";
+.step-list li > * { position: relative; z-index: 1; }
+
+/* Scroll-driven spine. JS positions it between the first and last marker
+   centres and drives the fill height from scroll progress. */
+.step-wrap { position: relative; }
+.step-spine {
   position: absolute;
   left: 16px;
-  top: 56px;
-  bottom: -6px;
   width: 2px;
-  background: var(--teal);
-  opacity: 0.35;
-  transform: scaleY(0);
-  transform-origin: top;
-  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.15s;
+  border-radius: 2px;
+  background: rgba(70, 189, 198, 0.16);
+  overflow: hidden;
+  z-index: 0;
 }
-.step-list li.is-visible:not(:last-child)::after { transform: scaleY(1); }
+.step-spine-fill {
+  display: block;
+  width: 100%;
+  height: 0;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--teal), #2a8f97);
+}
+
+/* Marker: hollow until the spine reaches it, then it fills and pops. */
 .step-list li::before {
   content: counter(step);
   position: absolute;
+  z-index: 2;
   left: 0;
   top: 22px;
   width: 34px;
@@ -764,11 +773,43 @@ ul { margin: 0; padding: 0; }
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  background: var(--teal);
-  color: #fff;
+  background: var(--cream);
+  border: 2px solid rgba(70, 189, 198, 0.4);
+  color: #2a8f97;
   font-size: 14px;
   font-weight: 700;
+  transition:
+    background 0.4s ease,
+    border-color 0.4s ease,
+    color 0.4s ease,
+    box-shadow 0.5s ease,
+    transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
+.step-list li.is-done::before {
+  background: var(--teal);
+  border-color: var(--teal);
+  color: #fff;
+  transform: scale(1.08);
+  box-shadow: 0 0 0 6px rgba(70, 189, 198, 0.13);
+}
+.step-list li.is-active::before {
+  box-shadow: 0 0 0 9px rgba(70, 189, 198, 0.16);
+}
+
+/* Soft wash behind whichever step you are currently level with. */
+.step-list li::after {
+  content: "";
+  position: absolute;
+  inset: 6px -20px;
+  z-index: 0;
+  border-radius: 12px;
+  background: linear-gradient(90deg, rgba(70, 189, 198, 0.12), rgba(70, 189, 198, 0) 62%);
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  pointer-events: none;
+}
+.step-list li.is-active::after { opacity: 1; }
+
 .step-list h3 {
   font-family: var(--font-sans);
   font-weight: 700;
@@ -783,6 +824,15 @@ ul { margin: 0; padding: 0; }
   color: var(--gray-700);
   margin: 0;
 }
+/* Heading and body stagger in behind the row itself. */
+.step-list li h3,
+.step-list li p {
+  opacity: 0;
+  translate: 0 10px;
+  transition: opacity 0.6s ease, translate 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.step-list li.is-visible h3 { opacity: 1; translate: 0 0; transition-delay: 0.12s; }
+.step-list li.is-visible p { opacity: 1; translate: 0 0; transition-delay: 0.22s; }
 
 .process-section { padding-top: 20px; }
 
@@ -1430,6 +1480,13 @@ section, .panel-wrap { scroll-margin-top: 84px; }
   .hero-badge-chip { opacity: 1; transform: none; }
   .hero-badge-text { max-width: none; }
   .hero-badge-text-inner { opacity: 1; transform: none; }
+  .step-list li h3, .step-list li p { opacity: 1; translate: none; }
+  .step-list li::before {
+    background: var(--teal);
+    border-color: var(--teal);
+    color: #fff;
+  }
+  .step-spine-fill { height: 100% !important; }
 }
 
 /* ---------- Responsive ---------- */
