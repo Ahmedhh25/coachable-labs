@@ -4,15 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Coachable Labs | Private 1:1 Coaching for High Achievers</title>
-<meta name="description" content="A private 1:1 coaching practice for high achievers. From the outside nothing is wrong, which is exactly the problem. Six-session engagements, private-pay.">
+<meta name="description" content="Private 1:1 coaching for high achievers who are still delivering and can no longer say what for. Six-session engagements. Private-pay, by application.">
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="Coachable Labs | Private 1:1 Coaching for High Achievers">
-<meta property="og:description" content="A private 1:1 coaching practice for high achievers. From the outside nothing is wrong, which is exactly the problem. Six-session engagements, private-pay.">
+<meta property="og:description" content="Private 1:1 coaching for high achievers who are still delivering and can no longer say what for. Six-session engagements. Private-pay, by application.">
 <meta property="og:image" content="assets/images/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Coachable Labs | Private 1:1 Coaching for High Achievers">
-<meta name="twitter:description" content="A private 1:1 coaching practice for high achievers. From the outside nothing is wrong, which is exactly the problem. Six-session engagements, private-pay.">
+<meta name="twitter:description" content="Private 1:1 coaching for high achievers who are still delivering and can no longer say what for. Six-session engagements. Private-pay, by application.">
 
 <link rel="icon" href="assets/images/favicon-light.png" media="(prefers-color-scheme: light)">
 <link rel="icon" href="assets/images/favicon-dark.png" media="(prefers-color-scheme: dark)">
@@ -30,7 +30,7 @@
   "@type": "Service",
   "serviceType": "Executive and professional 1:1 coaching",
   "name": "Coachable Labs 1:1 Coaching",
-  "description": "Confidential, research-anchored 1:1 coaching for high-achieving professionals for whom nothing is visibly wrong and something still is. Private-pay, by application.",
+  "description": "Confidential, research-anchored 1:1 coaching for high-achieving professionals whose track record is intact and whose reasons for it are not. Private-pay, by application.",
   "provider": {
     "@type": "Organization",
     "name": "Coachable Labs",
@@ -104,10 +104,31 @@
           <filter id="swirlblur" x="-40%" y="-40%" width="180%" height="180%">
             <feGaussianBlur stdDeviation="38"/>
           </filter>
+          <filter id="swirlblur-thin" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="20"/>
+          </filter>
+          <linearGradient id="swirlgrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#8fe2e8"/>
+            <stop offset="55%" stop-color="#46bdc6"/>
+            <stop offset="100%" stop-color="#2a8f97"/>
+          </linearGradient>
         </defs>
-        <circle cx="300" cy="300" r="185" fill="none" stroke="#46bdc6" stroke-width="110"
-                stroke-linecap="round" stroke-dasharray="800 362"
-                transform="rotate(115 300 300)" filter="url(#swirlblur)" opacity="0.55"/>
+
+        <g class="swirl-intro">
+          <g class="swirl-spin">
+            <circle class="swirl-arc swirl-arc-1" cx="300" cy="300" r="185" fill="none"
+                    stroke="url(#swirlgrad)" stroke-width="110" stroke-linecap="round"
+                    transform="rotate(115 300 300)" filter="url(#swirlblur)" opacity="0.55"/>
+          </g>
+        </g>
+
+        <g class="swirl-intro-2">
+          <g class="swirl-spin-r">
+            <circle class="swirl-arc swirl-arc-2" cx="300" cy="300" r="132" fill="none"
+                    stroke="#46bdc6" stroke-width="34" stroke-linecap="round"
+                    transform="rotate(-40 300 300)" filter="url(#swirlblur-thin)" opacity="0.42"/>
+          </g>
+        </g>
       </svg>
     </div>
 
@@ -657,7 +678,7 @@
         </div>
         <div class="form-field">
           <label for="message">What's going on</label>
-          <textarea id="message" name="message" rows="5" placeholder="From the outside everything is fine. What's true is..." required></textarea>
+          <textarea id="message" name="message" rows="5" placeholder="The version my colleagues get is that things are good. What's really going on is..." required></textarea>
         </div>
         <button type="submit" class="btn btn-teal btn-block">Request a conversation</button>
         <p class="form-status" id="form-status" role="status"></p>

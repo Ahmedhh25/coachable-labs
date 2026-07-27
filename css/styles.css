@@ -1286,11 +1286,50 @@ section, .panel-wrap { scroll-margin-top: 84px; }
 /* ---------- Hero motion ---------- */
 .hero-swirl {
   transform: translate(-46%, -52%) translateY(var(--py, 0px));
-  animation: swirl-breathe 9s ease-in-out infinite;
+  /* Breathing holds off until the intro has settled. */
+  animation: swirl-breathe 9s ease-in-out 2.6s infinite;
 }
-.hero-swirl svg { animation: swirl-spin 30s linear infinite; }
-@keyframes swirl-spin { to { transform: rotate(360deg); } }
 @keyframes swirl-breathe { 0%, 100% { scale: 1; } 50% { scale: 1.12; } }
+
+/* Hero swirl: the arcs sweep themselves into existence on load, then drift.
+   Intro and ambient spin live on separate nested <g> elements so the two
+   rotations compose instead of overwriting each other. */
+.hero-swirl svg g {
+  transform-box: view-box;
+  transform-origin: center;
+}
+.swirl-intro { animation: swirl-intro 2.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.swirl-intro-2 { animation: swirl-intro-2 3s cubic-bezier(0.16, 1, 0.3, 1) 0.18s both; }
+.swirl-spin { animation: swirl-spin 34s linear infinite; }
+.swirl-spin-r { animation: swirl-spin-r 26s linear infinite; }
+
+@keyframes swirl-intro {
+  0% { transform: rotate(-165deg) scale(0.5); opacity: 0; }
+  55% { opacity: 1; }
+  100% { transform: rotate(0deg) scale(1); opacity: 1; }
+}
+@keyframes swirl-intro-2 {
+  0% { transform: rotate(150deg) scale(0.35); opacity: 0; }
+  60% { opacity: 1; }
+  100% { transform: rotate(0deg) scale(1); opacity: 1; }
+}
+@keyframes swirl-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes swirl-spin-r { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+
+/* Resting state is fully drawn, so with animations off the arcs still render. */
+.swirl-arc-1 {
+  stroke-dasharray: 800 362;
+  stroke-dashoffset: 0;
+  animation: swirl-draw-1 2.4s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+}
+.swirl-arc-2 {
+  stroke-dasharray: 500 330;
+  stroke-dashoffset: 0;
+  animation: swirl-draw-2 2.9s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+}
+/* r=185 -> circumference 1162; r=132 -> 829. Arc 2 sweeps the other way. */
+@keyframes swirl-draw-1 { from { stroke-dashoffset: 1162; } to { stroke-dashoffset: 0; } }
+@keyframes swirl-draw-2 { from { stroke-dashoffset: -829; } to { stroke-dashoffset: 0; } }
 
 .hero-badge.reveal {
   opacity: 1;
@@ -1487,6 +1526,7 @@ section, .panel-wrap { scroll-margin-top: 84px; }
     color: #fff;
   }
   .step-spine-fill { height: 100% !important; }
+  .swirl-intro, .swirl-intro-2 { opacity: 1; transform: none; }
 }
 
 /* ---------- Responsive ---------- */
