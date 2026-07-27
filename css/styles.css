@@ -546,6 +546,181 @@ ul { margin: 0; padding: 0; }
   margin: 0;
 }
 
+/* ---------- Mechanism diagram ---------- */
+.diagram-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-top: 58px;
+  /* Narrower than the default container so the two SVGs don't scale up huge. */
+  max-width: 860px;
+}
+.diagram {
+  margin: 0;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-card);
+  padding: 24px 26px 22px;
+  background: rgba(255, 255, 255, 0.45);
+}
+.diagram-join {
+  border-color: rgba(70, 189, 198, 0.55);
+  background:
+    radial-gradient(80% 60% at 85% 50%, rgba(70, 189, 198, 0.12), transparent 70%),
+    rgba(255, 255, 255, 0.45);
+}
+.diagram-cap {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gray-500);
+  margin-bottom: 10px;
+}
+.diagram-join .diagram-cap { color: #2a8f97; }
+.diagram svg { width: 100%; height: auto; display: block; }
+.dg-labels text {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  fill: var(--near-black);
+  text-anchor: end;
+}
+.dg-split path,
+.dg-join path {
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 300;
+  stroke-dashoffset: 300;
+  transition: stroke-dashoffset 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.dg-split path { stroke: var(--gray-400); }
+.dg-join path { stroke: var(--teal); }
+.diagram.is-visible .dg-split path,
+.diagram.is-visible .dg-join path { stroke-dashoffset: 0; }
+.dg-join path:nth-child(2) { transition-delay: 0.08s; }
+.dg-join path:nth-child(3) { transition-delay: 0.16s; }
+.dg-join path:nth-child(4) { transition-delay: 0.24s; }
+.dg-ends circle { fill: var(--gray-400); opacity: 0; transition: opacity 0.4s ease 0.7s; }
+.diagram.is-visible .dg-ends circle { opacity: 1; }
+.dg-hub { fill: var(--teal); }
+.dg-hub-ring { fill: none; stroke: var(--teal); stroke-width: 2; opacity: 0.4; }
+.dg-hub, .dg-hub-ring {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(0);
+  transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 0.85s;
+}
+.diagram.is-visible .dg-hub,
+.diagram.is-visible .dg-hub-ring { transform: scale(1); }
+.diagram-note {
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--gray-700);
+  margin: 14px 0 0;
+}
+
+/* ---------- Pull quotes ---------- */
+.pullquote { padding: 60px 0; }
+.pullquote blockquote {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 44px;
+  line-height: 1.18;
+  letter-spacing: -0.03em;
+  color: var(--near-black);
+  text-align: center;
+  position: relative;
+}
+.pullquote blockquote::before {
+  content: "\201C";
+  color: var(--teal);
+  font-size: 1.15em;
+  line-height: 0;
+  vertical-align: -0.08em;
+  margin-right: 0.04em;
+}
+.pullquote blockquote::after {
+  content: "\201D";
+  color: var(--teal);
+  font-size: 1.15em;
+  line-height: 0;
+  vertical-align: -0.08em;
+  margin-left: 0.02em;
+}
+.pullquote-cite {
+  text-align: center;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gray-500);
+  margin: 22px 0 0;
+}
+
+/* ---------- Accordion (objections) ---------- */
+.accordion { margin-top: 50px; }
+.acc-item { border-bottom: 1px solid var(--line-soft); }
+.acc-item:first-child { border-top: 1px solid var(--line-soft); }
+.acc-item h3 { margin: 0; }
+.acc-q {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  background: none;
+  border: 0;
+  padding: 24px 4px;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 19px;
+  letter-spacing: -0.02em;
+  line-height: 1.35;
+  color: var(--near-black);
+  transition: color 0.25s ease;
+}
+.acc-q:hover { color: #2a8f97; }
+.acc-icon {
+  position: relative;
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  background: var(--teal);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.acc-icon::before,
+.acc-icon::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 12px;
+  height: 2px;
+  background: #fff;
+  border-radius: 2px;
+  transform: translate(-50%, -50%);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.acc-icon::after { transform: translate(-50%, -50%) rotate(90deg); }
+.acc-q[aria-expanded="true"] .acc-icon { transform: rotate(135deg); }
+.acc-q[aria-expanded="true"] .acc-icon::after { transform: translate(-50%, -50%) rotate(90deg) scaleX(0); }
+.acc-a {
+  overflow: hidden;
+  height: 0;
+  transition: height 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.acc-a p {
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--gray-700);
+  margin: 0;
+  padding: 0 46px 26px 4px;
+}
+
 /* ---------- Process steps ---------- */
 .step-list {
   list-style: none;
@@ -563,6 +738,21 @@ ul { margin: 0; padding: 0; }
   border-top: 1px solid var(--line-soft);
 }
 .step-list li:last-child { border-bottom: 1px solid var(--line-soft); }
+/* Connector running from each number down to the next, filling as the step reveals. */
+.step-list li:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: 16px;
+  top: 56px;
+  bottom: -6px;
+  width: 2px;
+  background: var(--teal);
+  opacity: 0.35;
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.15s;
+}
+.step-list li.is-visible:not(:last-child)::after { transform: scaleY(1); }
 .step-list li::before {
   content: counter(step);
   position: absolute;
@@ -594,36 +784,6 @@ ul { margin: 0; padding: 0; }
   margin: 0;
 }
 
-/* ---------- Objections ---------- */
-.objection-list {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 22px;
-  margin-top: 52px;
-  text-align: left;
-}
-.objection-card {
-  border: 1px solid rgba(0, 0, 0, 0.8);
-  border-radius: 10px;
-  padding: 26px 28px;
-  background: rgba(255, 255, 255, 0.5);
-}
-.objection-card:first-child { grid-column: 1 / -1; }
-.objection-card h3 {
-  font-family: var(--font-sans);
-  font-weight: 700;
-  font-size: 19px;
-  letter-spacing: -0.02em;
-  line-height: 1.3;
-  color: var(--near-black);
-  margin: 0 0 12px;
-}
-.objection-card p {
-  font-size: 15px;
-  line-height: 1.6;
-  color: var(--gray-700);
-  margin: 0;
-}
 .process-section { padding-top: 20px; }
 
 /* ---------- Footnotes ---------- */
@@ -1305,8 +1465,13 @@ section, .panel-wrap { scroll-margin-top: 84px; }
   .dark-card-photo { height: 280px; }
 
   .benefits-grid { grid-template-columns: 1fr; }
-  .objection-list { grid-template-columns: 1fr; }
   .packages-grid { grid-template-columns: 1fr; }
+  .diagram-wrap { grid-template-columns: 1fr; gap: 20px; }
+  .pullquote { padding: 42px 0; }
+  .pullquote blockquote { font-size: 30px; }
+  .acc-q { font-size: 17px; padding: 20px 2px; }
+  .acc-a p { padding-right: 8px; }
+  .step-list li { padding-left: 54px; }
   .contact-cards { grid-template-columns: 1fr; }
   .form-row { grid-template-columns: 1fr; }
 

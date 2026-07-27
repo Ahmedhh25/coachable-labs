@@ -259,6 +259,54 @@
     });
   });
 
+  /* ---------- Objections accordion ---------- */
+  var accItems = [].slice.call(document.querySelectorAll(".acc-item"));
+  if (accItems.length) {
+    var panels = accItems.map(function (item) {
+      return {
+        btn: item.querySelector(".acc-q"),
+        panel: item.querySelector(".acc-a")
+      };
+    });
+
+    var setOpen = function (entry, open) {
+      entry.btn.setAttribute("aria-expanded", open ? "true" : "false");
+      // Animate to the measured height, then release to auto so reflow (resize,
+      // font swap) doesn't leave the panel clipped at a stale pixel value.
+      if (open) {
+        entry.panel.style.height = entry.panel.scrollHeight + "px";
+        if (!reduceMotion) {
+          window.setTimeout(function () {
+            if (entry.btn.getAttribute("aria-expanded") === "true") entry.panel.style.height = "auto";
+          }, 420);
+        } else {
+          entry.panel.style.height = "auto";
+        }
+      } else {
+        entry.panel.style.height = entry.panel.scrollHeight + "px";
+        void entry.panel.offsetHeight;
+        entry.panel.style.height = "0px";
+      }
+    };
+
+    panels.forEach(function (entry) {
+      setOpen(entry, entry.btn.getAttribute("aria-expanded") === "true");
+      entry.btn.addEventListener("click", function () {
+        var willOpen = entry.btn.getAttribute("aria-expanded") !== "true";
+        panels.forEach(function (other) {
+          if (other !== entry && other.btn.getAttribute("aria-expanded") === "true") setOpen(other, false);
+        });
+        setOpen(entry, willOpen);
+      });
+    });
+
+    window.addEventListener("resize", function () {
+      panels.forEach(function (entry) {
+        if (entry.btn.getAttribute("aria-expanded") === "true") entry.panel.style.height = "auto";
+      });
+    });
+  }
+
   /* ---------- Contact form (Formspree) ---------- */
   var form = document.getElementById("contact-form");
   var status = document.getElementById("form-status");
