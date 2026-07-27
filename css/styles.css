@@ -273,6 +273,7 @@ ul { margin: 0; padding: 0; }
   margin: 0 auto;
 }
 .panel-body-dark { color: var(--near-black); }
+.panel-body + .panel-body { margin-top: 18px; }
 
 /* ---------- About carousel ---------- */
 .carousel { margin-top: 56px; position: relative; }
@@ -542,6 +543,54 @@ ul { margin: 0; padding: 0; }
   font-size: 14.5px;
   line-height: 1.55;
   color: var(--near-black);
+  margin: 0;
+}
+
+/* ---------- Process steps ---------- */
+.step-list {
+  list-style: none;
+  counter-reset: step;
+  margin: 46px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.step-list li {
+  counter-increment: step;
+  position: relative;
+  padding: 22px 0 22px 62px;
+  border-top: 1px solid var(--line-soft);
+}
+.step-list li:last-child { border-bottom: 1px solid var(--line-soft); }
+.step-list li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 22px;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: var(--teal);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+}
+.step-list h3 {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 19px;
+  letter-spacing: -0.02em;
+  color: var(--near-black);
+  margin: 0 0 8px;
+}
+.step-list p {
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: var(--gray-700);
   margin: 0;
 }
 
