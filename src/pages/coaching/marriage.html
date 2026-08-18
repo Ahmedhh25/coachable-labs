@@ -1,0 +1,117 @@
+<!--{
+  "route": "/coaching/marriage/",
+  "nav": "coaching",
+  "bodyClass": "page-service",
+  "title": "Premarital & Marriage Coaching | Raleigh & Online | Coachable Labs",
+  "description": "Four sessions, individual and joint, on expectations, money, family and communication. Have the difficult conversations on a calm day, not in a crisis.",
+  "schema": {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "serviceType": "Premarital and marriage coaching",
+    "name": "Marriage Coaching",
+    "description": "Four sessions, individual and joint, on expectations, money, family and communication, for couples before marriage and years into it.",
+    "provider": { "@type": "Organization", "name": "Coachable Labs", "url": "https://coachablelabs.com/" },
+    "areaServed": [
+      { "@type": "City", "name": "Raleigh", "addressRegion": "NC" },
+      { "@type": "City", "name": "Durham", "addressRegion": "NC" },
+      { "@type": "City", "name": "Chapel Hill", "addressRegion": "NC" },
+      { "@type": "Country", "name": "United States" }
+    ]
+  }
+}-->
+
+<!-- 1 — Hero -->
+<section class="section service-hero">
+  <div class="container narrow">
+    <p class="eyebrow">Marriage</p>
+    <h1 class="page-title">Marriage and pre-marital coaching</h1>
+    <p class="page-lede">Four sessions, individual and joint, on expectations, money, family and how the two of you talk to each other. In Raleigh-Durham or online, anywhere in the country.</p>
+    <a href="/start/" class="btn btn-teal service-cta">Tell us what's going on <span class="arrow">&#8599;</span></a>
+  </div>
+</section>
+
+<!-- 2 — Is this you. Both cases on one page: search intent overlaps heavily and
+     splitting them would divide the ranking signal (§4.6). -->
+<section class="section">
+  <div class="container narrow">
+    <h2 class="section-heading">Is this you</h2>
+
+    <h3 class="sub-heading">Before the wedding</h3>
+    <ul class="recognition-list">
+      <li class="reveal">You are engaged, and neither of you has said out loud what you are each assuming.</li>
+      <li class="reveal">Money has never been a real conversation, only a series of small ones.</li>
+      <li class="reveal">Both families have expectations and nobody has agreed which ones you are keeping.</li>
+      <li class="reveal">You want premarital work that isn't a checklist you both nod through.</li>
+    </ul>
+
+    <h3 class="sub-heading">Years in</h3>
+    <ul class="recognition-list">
+      <li class="reveal">You are aligned on logistics and disconnected everywhere else.</li>
+      <li class="reveal">There is a tension you have both worked around for years.</li>
+      <li class="reveal">You are two working parents holding it on two fronts at once.</li>
+      <li class="reveal">You would rather have the hard conversation on a calm day than a bad one.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 5 — One quotation, in the visitor's own words. The strongest sentence on the
+     old site; it belongs here. -->
+<section class="pullquote">
+  <div class="container narrow">
+    <blockquote class="reveal">We run the household like a well-managed company. I miss being married to you.</blockquote>
+    <p class="pullquote-cite reveal">The problem, in the words people use for it.</p>
+  </div>
+</section>
+
+<!-- 3 — What we work on -->
+<section class="section">
+  <div class="container narrow">
+    <h2 class="section-heading">What we work on</h2>
+    <ul class="dot-list">
+      <li>Expectations — what each of you assumed marriage would be, said plainly and compared.</li>
+      <li>Money — how it is decided, who decides it, and what you each want it to buy.</li>
+      <li>Family — parents, in-laws, and the boundaries you have not agreed yet.</li>
+      <li>Communication — how a disagreement actually runs between the two of you.</li>
+      <li>What the next few years are for, as a decision rather than a drift.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 4 — What the engagement is -->
+<section class="section">
+  <div class="container narrow">
+    <h2 class="section-heading">What the engagement is</h2>
+    <ul class="dot-list">
+      <li>Four sessions, some individual and some joint.</li>
+      <li>A fuller assessment before the first session, from both of you.</li>
+      <li>Work between sessions, done separately and brought back.</li>
+      <li>Private-pay. No insurance, no diagnosis, no documentation trail — and an end date.</li>
+    </ul>
+    <p class="quiet">This is coaching, not couples therapy. If what is in the room needs treatment rather than structure, we say so and refer it out — see <a class="inline-link" href="/coaching-vs-therapy/">coaching or therapy, which one do you need</a>.</p>
+  </div>
+</section>
+
+<!-- TESTIMONIAL slot — graduate from this track. Empty until real quotes land. -->
+{{#if testimonialsReady}}
+<section class="section proof-section">
+  <div class="container narrow">
+    {{> testimonial quote="" name="" who="" change=""}}
+  </div>
+</section>
+{{/if}}
+
+<!-- 6 — Related -->
+<section class="section related-section">
+  <div class="container narrow">
+    <h2 class="section-heading">Related</h2>
+    <ul class="related-list">
+      <li><a href="/coaching/family/">Family and parenting coaching</a> — if the pressure is coming from outside the marriage.</li>
+      <li><a href="/coaching/individual/">One-to-one coaching</a> — if one of you wants to work on your own first.</li>
+      <li><a href="/how-it-works/">How it works</a> — the arc, the commitment, and what it costs.</li>
+      <li><a href="/approach/">Why we work across everything at once</a>.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 7 — CTABlock -->
+{{> cta-block ctaHeading="Have it on a calm day." ctaBody="Tell us what is going on — either of you can send this, and you do not both have to be ready."}}

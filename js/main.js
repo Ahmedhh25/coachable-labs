@@ -1,4 +1,5 @@
-// Coachable Labs — site behavior + motion layer
+// Coachable Labs — site behaviour + motion layer.
+// Every block guards on the elements it needs, so this one file serves every page.
 (function () {
   "use strict";
 
@@ -23,6 +24,39 @@
     });
   }
 
+  /* ---------- Coaching dropdown ----------
+     The parent is a real link to /coaching/; the caret is a separate control, so
+     the hub page stays reachable by keyboard and by tap. Below 960px the caret is
+     hidden and the submenu is simply stacked open. */
+  var navItem = document.getElementById("nav-coaching");
+  var caret = document.getElementById("nav-caret");
+  if (navItem && caret) {
+    var setMenu = function (open) {
+      navItem.classList.toggle("is-open", open);
+      caret.setAttribute("aria-expanded", open ? "true" : "false");
+    };
+
+    caret.addEventListener("click", function (e) {
+      e.preventDefault();
+      setMenu(caret.getAttribute("aria-expanded") !== "true");
+    });
+
+    if (finePointer) {
+      navItem.addEventListener("mouseenter", function () { setMenu(true); });
+      navItem.addEventListener("mouseleave", function () { setMenu(false); });
+    }
+
+    navItem.addEventListener("focusout", function (e) {
+      if (!navItem.contains(e.relatedTarget)) setMenu(false);
+    });
+    document.addEventListener("click", function (e) {
+      if (!navItem.contains(e.target)) setMenu(false);
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") setMenu(false);
+    });
+  }
+
   /* ---------- Logo intro: auto-play the shutter animation once on load ---------- */
   var logoEl = document.querySelector(".logo");
   if (logoEl && !reduceMotion) {
@@ -34,23 +68,8 @@
     }, 500);
   }
 
-  /* ---------- Hero badge: measure text so it can slide out to its exact width ---------- */
-  var badgeText = document.querySelector(".hero-badge-text");
-  var badgeInner = document.querySelector(".hero-badge-text-inner");
-  if (badgeText && badgeInner) {
-    var measureBadge = function () {
-      // +2px of slack so sub-pixel rounding never clips the last glyph.
-      badgeText.style.setProperty("--badge-text-w", badgeInner.offsetWidth + 2 + "px");
-    };
-    measureBadge();
-    // The webfont almost never lands before this script runs, so the first
-    // measurement is taken in the fallback font and comes out too narrow.
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(measureBadge);
-    window.addEventListener("resize", measureBadge);
-  }
-
-  /* ---------- Split display headings into masked words ---------- */
-  document.querySelectorAll(".hero-title, .serif-heading, .sans-display").forEach(function (el) {
+  /* ---------- Split the hero heading into masked words ---------- */
+  document.querySelectorAll(".hero-title").forEach(function (el) {
     var wordIndex = 0;
     [].slice.call(el.childNodes).forEach(function (child) {
       if (child.nodeType !== 3 || !child.textContent.trim()) return;
@@ -76,12 +95,6 @@
     el.classList.add("words");
   });
 
-  /* ---------- Widget progress bars start empty, fill on reveal ---------- */
-  document.querySelectorAll(".widget-progress-bar > div").forEach(function (bar) {
-    bar.dataset.width = bar.style.width || "90%";
-    bar.style.width = "0%";
-  });
-
   /* ---------- Scroll reveal with sibling stagger ---------- */
   var revealEls = [].slice.call(document.querySelectorAll(".reveal"));
   revealEls.forEach(function (el) {
@@ -95,9 +108,6 @@
 
   function makeVisible(el) {
     el.classList.add("is-visible");
-    el.querySelectorAll(".widget-progress-bar > div").forEach(function (bar) {
-      setTimeout(function () { bar.style.width = bar.dataset.width; }, 400);
-    });
   }
 
   if ("IntersectionObserver" in window && revealEls.length) {
@@ -117,15 +127,7 @@
     revealEls.forEach(makeVisible);
   }
 
-  /* ---------- Unified scroll loop: header, progress, CTA, parallax ---------- */
-  var header = document.querySelector(".site-header");
-  var progressBar = document.querySelector(".scroll-progress");
-  var floatingCta = document.querySelector(".floating-cta");
-  var swirl = document.querySelector(".hero-swirl");
-  var parallaxPhotos = [].slice.call(document.querySelectorAll(".dark-card-photo"));
-
   /* ---------- Process steps: spine geometry + scroll-driven fill ---------- */
-  var stepWrap = document.getElementById("step-wrap");
   var stepList = document.getElementById("step-list");
   var stepSpine = document.getElementById("step-spine");
   var stepFill = document.getElementById("step-spine-fill");
@@ -136,7 +138,7 @@
   var spineTop = 0, spineHeight = 0;
 
   function layoutSpine() {
-    if (!stepItems.length) return;
+    if (!stepItems.length || !stepSpine) return;
     var first = stepItems[0];
     var last = stepItems[stepItems.length - 1];
     spineTop = first.offsetTop + MARKER_CENTER;
@@ -171,6 +173,12 @@
     stepItems.forEach(function (li) { li.classList.add("is-done"); });
   }
 
+  /* ---------- Unified scroll loop: header, progress, CTA, parallax ---------- */
+  var header = document.querySelector(".site-header");
+  var progressBar = document.querySelector(".scroll-progress");
+  var floatingCta = document.querySelector(".floating-cta");
+  var swirl = document.querySelector(".hero-swirl");
+
   var ticking = false;
   function onScroll() {
     if (!ticking) {
@@ -192,12 +200,6 @@
 
     if (!reduceMotion) {
       if (swirl) swirl.style.setProperty("--py", (y * 0.28).toFixed(1) + "px");
-      parallaxPhotos.forEach(function (img) {
-        var r = img.getBoundingClientRect();
-        if (r.bottom < 0 || r.top > vh) return;
-        var p = (r.top + r.height / 2 - vh / 2) / vh;
-        img.style.transform = "translateY(" + (p * -24).toFixed(1) + "px) scale(1.06)";
-      });
       updateSteps(vh);
     }
   }
@@ -216,59 +218,9 @@
     });
   }
 
-  /* ---------- Carousel: arrows, drag-to-scroll, gentle autoplay ---------- */
-  var track = document.getElementById("carousel-track");
-  var prev = document.getElementById("carousel-prev");
-  var next = document.getElementById("carousel-next");
-  if (track && prev && next) {
-    var autoTimer = null;
-    var stopAuto = function () {
-      if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
-    };
-    var step = function () {
-      var card = track.querySelector(".photo-card");
-      var gap = parseFloat(getComputedStyle(track).columnGap) || 36;
-      return card ? card.offsetWidth + gap : 350;
-    };
-
-    prev.addEventListener("click", function () { stopAuto(); track.scrollBy({ left: -step(), behavior: "smooth" }); });
-    next.addEventListener("click", function () { stopAuto(); track.scrollBy({ left: step(), behavior: "smooth" }); });
-
-    var down = false, startX = 0, startLeft = 0, dragged = false;
-    track.addEventListener("pointerdown", function (e) {
-      down = true;
-      dragged = false;
-      startX = e.clientX;
-      startLeft = track.scrollLeft;
-      track.classList.add("dragging");
-    });
-    window.addEventListener("pointermove", function (e) {
-      if (!down) return;
-      var dx = e.clientX - startX;
-      if (Math.abs(dx) > 4) dragged = true;
-      track.scrollLeft = startLeft - dx;
-    });
-    window.addEventListener("pointerup", function () {
-      if (!down) return;
-      down = false;
-      track.classList.remove("dragging");
-      if (dragged) stopAuto();
-    });
-    track.addEventListener("dragstart", function (e) { e.preventDefault(); });
-
-    if (!reduceMotion) {
-      autoTimer = setInterval(function () {
-        if (track.matches(":hover")) return;
-        var atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 20;
-        if (atEnd) track.scrollTo({ left: 0, behavior: "smooth" });
-        else track.scrollBy({ left: step(), behavior: "smooth" });
-      }, 4500);
-    }
-  }
-
   /* ---------- 3D tilt + cursor spotlight on cards ---------- */
   if (finePointer && !reduceMotion) {
-    document.querySelectorAll(".package-card, .benefit-card, .dark-card, .contact-card").forEach(function (card) {
+    document.querySelectorAll(".contact-card").forEach(function (card) {
       card.classList.add("tilt");
       card.addEventListener("mousemove", function (e) {
         var r = card.getBoundingClientRect();
@@ -288,7 +240,7 @@
 
   /* ---------- Magnetic buttons ---------- */
   if (finePointer && !reduceMotion) {
-    document.querySelectorAll(".hero-ctas .btn, .floating-cta, .carousel-btn").forEach(function (btn) {
+    document.querySelectorAll(".hero-ctas .btn, .floating-cta").forEach(function (btn) {
       btn.classList.add("magnetic");
       btn.addEventListener("mousemove", function (e) {
         var r = btn.getBoundingClientRect();
@@ -318,68 +270,77 @@
     });
   });
 
-  /* ---------- Objections accordion ---------- */
-  var accItems = [].slice.call(document.querySelectorAll(".acc-item"));
-  if (accItems.length) {
-    var panels = accItems.map(function (item) {
-      return {
-        btn: item.querySelector(".acc-q"),
-        panel: item.querySelector(".acc-a")
-      };
-    });
+  /* ---------- Intake form (/start/) ----------
+     Posts to the same Formspree endpoint the previous single-page site used.
+     Validation is inline and per-field, on blur and on submit; success replaces
+     the form in place rather than redirecting. */
+  var form = document.getElementById("intake-form");
+  var status = document.getElementById("form-status");
+  var confirmBox = document.getElementById("form-confirm");
 
-    var setOpen = function (entry, open) {
-      entry.btn.setAttribute("aria-expanded", open ? "true" : "false");
-      // Animate to the measured height, then release to auto so reflow (resize,
-      // font swap) doesn't leave the panel clipped at a stale pixel value.
-      if (open) {
-        entry.panel.style.height = entry.panel.scrollHeight + "px";
-        if (!reduceMotion) {
-          window.setTimeout(function () {
-            if (entry.btn.getAttribute("aria-expanded") === "true") entry.panel.style.height = "auto";
-          }, 420);
-        } else {
-          entry.panel.style.height = "auto";
-        }
-      } else {
-        entry.panel.style.height = entry.panel.scrollHeight + "px";
-        void entry.panel.offsetHeight;
-        entry.panel.style.height = "0px";
+  if (form) {
+    var rules = {
+      email: function (value) {
+        if (!value.trim()) return "We need an email address to come back to you.";
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return "That does not look like an email address.";
+        return "";
+      },
+      message: function (value) {
+        if (!value.trim()) return "Tell us what is going on, in as much or as little detail as you want.";
+        return "";
       }
     };
 
-    panels.forEach(function (entry) {
-      setOpen(entry, entry.btn.getAttribute("aria-expanded") === "true");
-      entry.btn.addEventListener("click", function () {
-        var willOpen = entry.btn.getAttribute("aria-expanded") !== "true";
-        panels.forEach(function (other) {
-          if (other !== entry && other.btn.getAttribute("aria-expanded") === "true") setOpen(other, false);
-        });
-        setOpen(entry, willOpen);
+    var showFieldError = function (field, message) {
+      var wrap = field.closest(".form-field");
+      var error = document.getElementById(field.id + "-error");
+      wrap.classList.toggle("has-error", !!message);
+      field.setAttribute("aria-invalid", message ? "true" : "false");
+      if (error) {
+        error.textContent = message;
+        error.hidden = !message;
+      }
+    };
+
+    var validateField = function (id) {
+      var field = document.getElementById(id);
+      if (!field) return true;
+      var message = rules[id](field.value);
+      showFieldError(field, message);
+      return !message;
+    };
+
+    Object.keys(rules).forEach(function (id) {
+      var field = document.getElementById(id);
+      if (!field) return;
+      field.addEventListener("blur", function () { validateField(id); });
+      field.addEventListener("input", function () {
+        if (field.closest(".form-field").classList.contains("has-error")) validateField(id);
       });
     });
 
-    window.addEventListener("resize", function () {
-      panels.forEach(function (entry) {
-        if (entry.btn.getAttribute("aria-expanded") === "true") entry.panel.style.height = "auto";
-      });
-    });
-  }
+    var showStatus = function (text) {
+      if (!status) return;
+      status.textContent = text;
+      status.classList.remove("pop");
+      void status.offsetWidth;
+      status.classList.add("pop");
+    };
 
-  /* ---------- Contact form (Formspree) ---------- */
-  var form = document.getElementById("contact-form");
-  var status = document.getElementById("form-status");
-  if (form) {
     form.addEventListener("submit", function (e) {
       e.preventDefault();
-      var submitBtn = form.querySelector("button[type=submit]");
-      var showStatus = function (text) {
-        status.textContent = text;
-        status.classList.remove("pop");
-        void status.offsetWidth;
-        status.classList.add("pop");
-      };
 
+      var firstInvalid = null;
+      Object.keys(rules).forEach(function (id) {
+        if (!validateField(id) && !firstInvalid) firstInvalid = document.getElementById(id);
+      });
+      if (firstInvalid) {
+        showStatus("");
+        firstInvalid.focus();
+        return;
+      }
+
+      var submitBtn = form.querySelector("button[type=submit]");
       if (submitBtn) submitBtn.disabled = true;
       showStatus("Sending...");
 
@@ -389,16 +350,20 @@
         headers: { Accept: "application/json" }
       }).then(function (response) {
         if (response.ok) {
-          showStatus("Thanks — we'll be in touch shortly!");
-          form.reset();
+          form.hidden = true;
+          if (confirmBox) {
+            confirmBox.hidden = false;
+            confirmBox.focus();
+            confirmBox.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" });
+          }
         } else {
           response.json().then(function (data) {
             var msg = data && data.errors && data.errors.length
               ? data.errors.map(function (err) { return err.message; }).join(", ")
-              : "Something went wrong. Please try again or email us directly.";
+              : "Something went wrong. Please try again, or email us directly.";
             showStatus(msg);
           }).catch(function () {
-            showStatus("Something went wrong. Please try again or email us directly.");
+            showStatus("Something went wrong. Please try again, or email us directly.");
           });
         }
       }).catch(function () {

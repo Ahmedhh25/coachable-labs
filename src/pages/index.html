@@ -1,0 +1,159 @@
+<!--{
+  "route": "/",
+  "nav": "",
+  "bodyClass": "page-home",
+  "title": "Coachable Labs — Life Coaching in Six Sessions | Raleigh & Online",
+  "description": "Structured one-to-one coaching across career, money, health and relationships — six sessions, a set arc, and an end date. Raleigh-Durham and nationwide online.",
+  "schema": [
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Coachable Labs",
+      "url": "https://coachablelabs.com/",
+      "logo": "https://coachablelabs.com/assets/images/logo-mark.png",
+      "email": "connect@coachablelabs.com",
+      "telephone": "+1-919-757-1979",
+      "description": "One-to-one coaching across career, money, health and relationships, in six sessions with a stated end date."
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "@id": "https://coachablelabs.com/#localbusiness",
+      "name": "Coachable Labs",
+      "url": "https://coachablelabs.com/",
+      "email": "connect@coachablelabs.com",
+      "telephone": "+1-919-757-1979",
+      "priceRange": "$500-$1500",
+      "areaServed": [
+        { "@type": "City", "name": "Raleigh", "addressRegion": "NC" },
+        { "@type": "City", "name": "Durham", "addressRegion": "NC" },
+        { "@type": "City", "name": "Chapel Hill", "addressRegion": "NC" },
+        { "@type": "Country", "name": "United States" }
+      ],
+      "address": { "@type": "PostalAddress", "addressLocality": "Raleigh", "addressRegion": "NC", "addressCountry": "US" }
+    }
+  ]
+}-->
+
+<!-- H-1 — Hero. The gating eyebrow that used to sit above the headline is gone:
+     it was the first thing a referred visitor read and it worked against the referral. -->
+<section class="hero" id="top">
+  <div class="hero-swirl" aria-hidden="true">
+    <svg viewBox="0 0 600 600" width="600" height="600">
+      <defs>
+        <filter id="swirlblur" x="-40%" y="-40%" width="180%" height="180%">
+          <feGaussianBlur stdDeviation="38"/>
+        </filter>
+        <filter id="swirlblur-thin" x="-40%" y="-40%" width="180%" height="180%">
+          <feGaussianBlur stdDeviation="20"/>
+        </filter>
+        <linearGradient id="swirlgrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#8fe2e8"/>
+          <stop offset="55%" stop-color="#46bdc6"/>
+          <stop offset="100%" stop-color="#2a8f97"/>
+        </linearGradient>
+      </defs>
+      <g class="swirl-intro">
+        <g class="swirl-spin">
+          <circle class="swirl-arc swirl-arc-1" cx="300" cy="300" r="185" fill="none"
+                  stroke="url(#swirlgrad)" stroke-width="110" stroke-linecap="round"
+                  transform="rotate(115 300 300)" filter="url(#swirlblur)" opacity="0.55"/>
+        </g>
+      </g>
+      <g class="swirl-intro-2">
+        <g class="swirl-spin-r">
+          <circle class="swirl-arc swirl-arc-2" cx="300" cy="300" r="132" fill="none"
+                  stroke="#46bdc6" stroke-width="34" stroke-linecap="round"
+                  transform="rotate(-40 300 300)" filter="url(#swirlblur-thin)" opacity="0.42"/>
+        </g>
+      </g>
+    </svg>
+  </div>
+
+  <div class="container hero-inner">
+    <h1 class="hero-title reveal">Coaching for the parts of life nobody sits down and plans</h1>
+    <p class="hero-sub reveal">One-to-one coaching that takes your career, your money, your health and the people closest to you as one situation rather than four separate ones. Six sessions, a set arc, and an end date agreed before you start.</p>
+    <div class="hero-ctas reveal">
+      <a href="/start/" class="btn btn-teal">Tell us what's going on <span class="arrow">&#8599;</span></a>
+      <a href="/book-a-call/" class="hero-quiet-link">Or book a 30-minute call</a>
+    </div>
+  </div>
+</section>
+
+<!-- H-2 — Who this is for. Situations a visitor recognises, not criteria they are measured against. -->
+<section class="section recognition-section">
+  <div class="container narrow">
+    <h2 class="section-heading">You might recognise this</h2>
+    <ul class="recognition-list">
+      <li class="reveal">A marriage that runs like a household and stopped feeling like a marriage.</li>
+      <li class="reveal">A career you chose by default and have never sat down and questioned.</li>
+      <li class="reveal">A decision about a major or a move, and nobody neutral to talk it through with.</li>
+      <li class="reveal">Success that arrived on schedule and somehow didn't land.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- H-2b — Proof.
+     TESTIMONIALS: the twelve graduates have before-and-after assessments; the quotes
+     themselves are not in hand. The slots below stay empty until they are — see
+     src/partials/testimonial.html. Flip site.json testimonialsReady when they land.
+     The interest figure is stated as what it measures: interest, not results. -->
+<section class="section proof-section">
+  <div class="container narrow">
+    {{#if testimonialsReady}}
+    <div class="testimonial-row">
+      {{> testimonial quote="" name="" who="" change=""}}
+      {{> testimonial quote="" name="" who="" change=""}}
+    </div>
+    {{/if}}
+    <p class="proof-figure reveal"><strong>Eighteen of twenty people</strong> who had never heard of us said they wanted this after one conversation about it. That is a measure of interest, not of outcomes — the outcomes are what the six sessions are for.</p>
+  </div>
+</section>
+
+<!-- H-3 — The five tracks. Five, stated once, the same five on every page that lists them. -->
+<section class="section tracks-section" id="services">
+  <div class="container">
+    <h2 class="section-heading center">Five ways to work with us</h2>
+    <div class="track-grid" id="packages">
+      {{> track-card name="Individual" href="/coaching/individual/" desc="Six sessions on purpose, health, money and the people around you." tag1="Purpose" tag2="Habits" tag3="Direction"}}
+      {{> track-card name="Marriage" href="/coaching/marriage/" desc="Before the wedding or years in — individual and joint sessions." tag1="Expectations" tag2="Money" tag3="Communication"}}
+      {{> track-card name="Family" href="/coaching/family/" desc="Boundaries, long-standing tension, the conversations nobody starts." tag1="Boundaries" tag2="Parenting" tag3="Candor"}}
+      {{> track-card name="Career" href="/coaching/career/" desc="Choosing a direction, leaving a role, staying relevant as work changes." tag1="Direction" tag2="Relevance" tag3="Exits"}}
+      {{> track-card name="Leaders" href="/coaching/leaders/" desc="For founders whose organisation outgrew the story it started with." tag1="Identity" tag2="Strategy" tag3="Systems"}}
+    </div>
+    <p class="tracks-note center reveal">Not sure which one? <a href="/start/">Say so on the form</a> — most people don't arrive knowing.</p>
+  </div>
+</section>
+
+<!-- H-4 — How it works, condensed. The full process lives on /how-it-works/. -->
+<section class="section steps-condensed" id="process">
+  <div class="container narrow">
+    <h2 class="section-heading">How it works</h2>
+    <ol class="steps-compact">
+      <li class="reveal"><span class="step-n">1</span> You tell us what is going on.</li>
+      <li class="reveal"><span class="step-n">2</span> A thirty-minute call, to work out what you actually need.</li>
+      <li class="reveal"><span class="step-n">3</span> We scope the work and agree a fee.</li>
+      <li class="reveal"><span class="step-n">4</span> The engagement runs, and then it ends.</li>
+    </ol>
+    <p class="reveal"><a class="inline-link" href="/how-it-works/">The whole process, including what it costs</a></p>
+  </div>
+</section>
+
+<!-- H-5 — Who you would work with.
+     [COACH PHOTOS] outstanding. This block is suppressed until site.json
+     coachesReady is true, so the page never ships with placeholder people in it. -->
+{{#if coachesReady}}
+<section class="section coaches-preview">
+  <div class="container">
+    <h2 class="section-heading center">Who you'd be working with</h2>
+    <div class="coach-grid coach-grid-preview">
+      {{> coach-card name="" role="" bio="" photo="" works="" eager="true"}}
+      {{> coach-card name="" role="" bio="" photo="" works=""}}
+    </div>
+    <p class="center reveal"><a class="inline-link" href="/about/">More about the people you'd be working with</a></p>
+  </div>
+</section>
+{{/if}}
+
+<!-- H-6 — CTABlock -->
+{{> cta-block ctaHeading="Tell us what is going on." ctaBody="A short form, read by a person. We come back within two working days, and nothing commits you to anything."}}

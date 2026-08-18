@@ -1,0 +1,53 @@
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header" id="site-header">
+  <div class="container header-inner">
+    <a href="/" class="logo" aria-label="Coachable Labs, home">
+      <span class="logo-frame">
+        <img src="/assets/images/logo-mark.png" alt="" class="logo-mark">
+        <span class="logo-shutter" aria-hidden="true">
+          <span class="logo-pin"></span>
+          <span class="logo-choke"></span>
+          <span class="blade blade-1"></span>
+          <span class="blade blade-2"></span>
+          <span class="blade blade-3"></span>
+          <span class="blade blade-4"></span>
+          <span class="blade blade-5"></span>
+          <svg class="logo-seams" aria-hidden="true" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path class="seam" d="M50,50 Q72.83,57.42 98.00,50.00" />
+            <path class="seam" d="M50,50 Q50.00,74.00 64.83,95.65" />
+            <path class="seam" d="M50,50 Q27.17,57.42 11.17,78.21" />
+            <path class="seam" d="M50,50 Q35.89,30.58 11.17,21.79" />
+            <path class="seam" d="M50,50 Q64.11,30.58 64.83,4.35" />
+          </svg>
+        </span>
+      </span>
+      <span class="logo-text">Coachable Labs</span>
+    </a>
+
+    <nav class="main-nav" id="main-nav" aria-label="Main">
+      <div class="nav-item nav-item-menu" id="nav-coaching">
+        <a href="/coaching/" {{nav_coaching}}>Coaching</a>
+        <button type="button" class="nav-caret" id="nav-caret" aria-expanded="false" aria-controls="nav-menu-coaching" aria-label="Show coaching tracks">
+          <svg viewBox="0 0 12 8" width="12" height="8" aria-hidden="true"><path d="M1 1.5 6 6.5 11 1.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="nav-menu" id="nav-menu-coaching">
+          <a href="/coaching/individual/">Individual</a>
+          <a href="/coaching/marriage/">Marriage</a>
+          <a href="/coaching/family/">Family</a>
+          <a href="/coaching/career/">Career</a>
+          <a href="/coaching/leaders/">Leaders</a>
+        </div>
+      </div>
+
+      <a href="/how-it-works/" {{nav_how}}>How It Works</a>
+      <a href="/approach/" {{nav_approach}}>Approach</a>
+      {{#if coachesReady}}<a href="/about/" {{nav_about}}>About</a>{{/if}}
+      <a href="/start/" class="btn btn-teal btn-sm nav-cta">Get Started</a>
+    </nav>
+
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="main-nav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>

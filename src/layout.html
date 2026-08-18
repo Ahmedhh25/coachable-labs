@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{title}}</title>
+<meta name="description" content="{{description}}">
+<link rel="canonical" href="{{canonical}}">
+{{robots}}
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{canonical}}">
+<meta property="og:site_name" content="Coachable Labs">
+<meta property="og:title" content="{{title}}">
+<meta property="og:description" content="{{description}}">
+<meta property="og:image" content="{{origin}}{{ogImage}}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{title}}">
+<meta name="twitter:description" content="{{description}}">
+<meta name="twitter:image" content="{{origin}}{{ogImage}}">
+
+<link rel="icon" href="/assets/images/favicon-light.png" media="(prefers-color-scheme: light)">
+<link rel="icon" href="/assets/images/favicon-dark.png" media="(prefers-color-scheme: dark)">
+<link rel="apple-touch-icon" href="/assets/images/favicon-light.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Figtree:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="/css/styles.css">
+<link rel="stylesheet" href="/css/site.css">
+
+{{schemaBlocks}}
+</head>
+<body class="{{bodyClass}}">
+
+<div class="scroll-progress" aria-hidden="true"></div>
+<div class="bg-blobs" aria-hidden="true">
+  <span class="blob blob-a"></span>
+  <span class="blob blob-b"></span>
+  <span class="blob blob-c"></span>
+</div>
+
+{{> header}}
+
+<main id="main">
+{{content}}
+</main>
+
+{{> footer}}
+
+{{#if floatingCta}}
+<a href="/start/" class="floating-cta btn btn-teal">Tell us what's going on <span class="arrow">&#8599;</span></a>
+{{/if}}
+
+<script src="/js/main.js"></script>
+</body>
+</html>

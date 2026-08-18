@@ -1,0 +1,18 @@
+<!-- CoachCard (§3.1).
+     [COACH PHOTOS] — photo, credentials and the two-to-three-sentence background
+     are outstanding. Real photographs of the coaches only; stock imagery of
+     unrelated people is worse than no photograph (§4.12).
+     Nothing here renders until site.json coachesReady is true. -->
+<article class="coach-card">
+  <div class="coach-photo-frame">
+    {{#if photo}}
+    <img class="coach-photo" src="{{photo}}" alt="{{name}}, {{role}}" width="480" height="480"{{#if eager}} fetchpriority="high"{{else}} loading="lazy"{{/if}}>
+    {{else}}
+    <p class="coach-photo-missing">[PHOTO]</p>
+    {{/if}}
+  </div>
+  <h3 class="coach-name">{{name}}</h3>
+  <p class="coach-role">{{role}}</p>
+  <p class="coach-bio">{{bio}}</p>
+  {{#if works}}<p class="coach-works"><span class="coach-works-label">Works on</span> {{works}}</p>{{/if}}
+</article>

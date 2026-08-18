@@ -1,0 +1,78 @@
+<!--{
+  "route": "/coaching/",
+  "nav": "coaching",
+  "bodyClass": "page-coaching",
+  "title": "Coaching Services — Individual, Marriage, Family & Career | Coachable Labs",
+  "description": "Five ways to work with us: one-to-one coaching, marriage, family, career and leadership. All private, all one-to-one, all with a set end date."
+}-->
+
+<section class="section page-head">
+  <div class="container narrow">
+    <!-- C-1 — Intro -->
+    <h1 class="page-title">Five ways to work with us</h1>
+    <p class="page-lede">All five are one-to-one and private, and none of them run indefinitely. Each is a set number of sessions across a set arc, with an end date agreed before the first one. There is work between sessions.</p>
+  </div>
+</section>
+
+<!-- C-2 — The five tracks.
+     SESSION COUNTS: Individual and Marriage and Family are confirmed. Career and
+     Leaders are not — they are bracketed rather than guessed (§0.3, §4.3). -->
+<section class="section tracks-section">
+  <div class="container">
+    <h2 class="section-heading center">What each one is</h2>
+    <div class="track-grid track-grid-full">
+      {{> track-card
+          name="Individual"
+          href="/coaching/individual/"
+          desc="The flagship. Purpose, health, money and relationships worked as one situation rather than four. A purpose specific enough to make the rest of your decisions cheaper."
+          who="For someone who is functioning and can no longer say what any of it is for."
+          sessions="Six sessions"
+          tag1="Purpose" tag2="Habits" tag3="Direction"}}
+
+      {{> track-card
+          name="Marriage"
+          href="/coaching/marriage/"
+          desc="Pre-marital and marital work on expectations, money, family and communication. Individual sessions and joint ones."
+          who="For couples before the wedding, and for couples years past it."
+          sessions="Four sessions"
+          tag1="Expectations" tag2="Money" tag3="Communication"}}
+
+      {{> track-card
+          name="Family"
+          href="/coaching/family/"
+          desc="Boundaries with parents and in-laws, years of things left unsaid, and parenting through a stage nobody prepared you for."
+          who="For a family carrying tension that nobody in it starts the conversation about."
+          sessions="Four sessions"
+          tag1="Boundaries" tag2="Parenting" tag3="Candor"}}
+
+      {{> track-card
+          name="Career"
+          href="/coaching/career/"
+          desc="Choosing a major or a first direction, leaving a role cleanly, and staying relevant as AI resets the work in your field."
+          who="For students choosing a direction and for people who have outgrown one."
+          sessions="[SESSION COUNT — confirm]"
+          tag1="Direction" tag2="Relevance" tag3="Exits"}}
+
+      {{> track-card
+          name="Leaders"
+          href="/coaching/leaders/"
+          desc="Purpose and operating blueprint, systems under load, growth strategy, and how the leader shows up publicly."
+          who="For founders and the people running organisations."
+          sessions="[SESSION COUNT — confirm]"
+          tag1="Identity" tag2="Strategy" tag3="Systems"}}
+    </div>
+  </div>
+</section>
+
+<!-- C-3 — Not sure which -->
+<section class="section not-sure">
+  <div class="container narrow">
+    <h2 class="section-heading">Not sure which one</h2>
+    <p>Most people don't arrive knowing. A career question and a marriage question are usually the same question seen from two ends, and working out which one you are actually asking is part of the first conversation, not something you have to settle first.</p>
+    <p>Pick <strong>"not sure yet"</strong> on the form and write what is going on. <a class="inline-link" href="/start/">Tell us what's going on</a>.</p>
+    <p class="quiet">Or read <a class="inline-link" href="/approach/">why we work across everything at once</a>, and <a class="inline-link" href="/how-it-works/">how an engagement runs, including what it costs</a>.</p>
+  </div>
+</section>
+
+<!-- C-4 — CTABlock -->
+{{> cta-block ctaHeading="Start with what's going on." ctaBody="You do not need to have picked a track. Write what is happening and we will work out the rest together."}}

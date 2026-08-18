@@ -1,0 +1,12 @@
+<!-- TrackCard (§3.1). The whole card is the tap target. -->
+<article class="track-card">
+  <h3 class="track-name"><a href="{{href}}" class="track-link">{{name}}</a></h3>
+  <p class="track-desc">{{desc}}</p>
+  {{#if who}}<p class="track-who">{{who}}</p>{{/if}}
+  {{#if sessions}}<p class="track-sessions">{{sessions}}</p>{{/if}}
+  <p class="track-tags">
+    <span class="track-tag">{{tag1}}</span>
+    {{#if tag2}}<span class="track-tag">{{tag2}}</span>{{/if}}
+    {{#if tag3}}<span class="track-tag">{{tag3}}</span>{{/if}}
+  </p>
+</article>

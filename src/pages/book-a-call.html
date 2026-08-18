@@ -1,0 +1,59 @@
+<!--{
+  "route": "/book-a-call/",
+  "nav": "",
+  "bodyClass": "page-book",
+  "floatingCta": false,
+  "title": "Book a 30-Minute Call | Coachable Labs",
+  "description": "A thirty-minute conversation about what is going on and whether coaching is the right instrument for it. No pricing pressure and no obligation.",
+  "_spec": "No §4 specification for this route was supplied — §4.15 and the sections after it were truncated. Built to §2.5 and flagged for review."
+}-->
+
+<section class="section page-head">
+  <div class="container narrow">
+    <h1 class="page-title">Book a 30-minute call</h1>
+    <p class="page-lede">Half an hour on what is going on and where you are trying to get to, so we can both work out whether this is the right instrument for it. If it isn't, we will say so on the call and point you somewhere better.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container narrow">
+    <h2 class="section-heading">What happens on it</h2>
+    <ul class="dot-list">
+      <li>You talk, mostly. We ask about the situation rather than about your goals.</li>
+      <li>We take one real thing you are dealing with and work it through with the framework, so you can see how the sessions actually run.</li>
+      <li>If it is a fit, we scope the work and agree a fee afterwards. Nothing is charged before or during this call.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- [BOOKING TOOL] — unresolved. Which scheduler powers this page (Calendly,
+     Cal.com, SavvyCal, something custom) affects the embed, its mobile height and
+     how consent is handled, so nothing is embedded here yet.
+
+     When it is decided: put the embed inside the block below, set bookingEmbed to
+     true in src/site.json, and check it at 320px with the keyboard open. Keep the
+     email and phone fallback underneath it either way — an embed that fails to
+     load must not leave the page with no way to reach anyone. -->
+<section class="section booking-section">
+  <div class="container narrow">
+    {{#if bookingEmbed}}
+    <div class="booking-embed" id="booking-embed">
+      <!-- Scheduler embed goes here. -->
+    </div>
+    {{else}}
+    <div class="booking-fallback">
+      <h2 class="section-heading">To book one</h2>
+      <p>Email <a href="mailto:{{email}}">{{email}}</a> or call <a href="tel:{{phoneHref}}">{{phone}}</a> and we will offer you a few times.</p>
+      <p class="quiet">[BOOKING TOOL] &mdash; the scheduler for this page has not been chosen yet, so there is nothing to embed. See the comment in src/pages/book-a-call.html.</p>
+    </div>
+    {{/if}}
+  </div>
+</section>
+
+<section class="section">
+  <div class="container narrow">
+    <h2 class="section-heading">Not ready for a call?</h2>
+    <p>Most people aren't, and that is the more common way in. Write down what is going on and send it — a person reads it and comes back within two working days, and nothing about that commits you to a call.</p>
+    <p><a href="/start/" class="btn btn-teal">Tell us what's going on <span class="arrow">&#8599;</span></a></p>
+  </div>
+</section>

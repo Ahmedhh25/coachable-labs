@@ -1,0 +1,16 @@
+{
+  "origin": "https://coachablelabs.com",
+  "siteName": "Coachable Labs",
+  "email": "connect@coachablelabs.com",
+  "phone": "+1 (919) 757-1979",
+  "phoneHref": "+19197571979",
+  "phoneSchema": "+1-919-757-1979",
+  "serviceArea": "Raleigh, Durham and Chapel Hill, plus nationwide online",
+  "ogImage": "/assets/images/og-image.png",
+  "floatingCta": true,
+
+  "_flags": "Set to true only when the real material exists. build.js reports on each.",
+  "coachesReady": false,
+  "testimonialsReady": false,
+  "bookingEmbed": false
+}

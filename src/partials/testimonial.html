@@ -1,0 +1,13 @@
+<!-- Testimonial (§3.1).
+     Sourced from the twelve programme graduates and their before-and-after
+     assessments (§0.5). Nothing is written here until those quotes exist —
+     invented testimonials are not an option. Gated on site.json
+     testimonialsReady; build.js reports while it is false. -->
+<figure class="testimonial">
+  <blockquote class="testimonial-quote">{{quote}}</blockquote>
+  <figcaption class="testimonial-cite">
+    <span class="testimonial-name">{{name}}</span>
+    <span class="testimonial-who">{{who}}</span>
+    {{#if change}}<span class="testimonial-change">{{change}}</span>{{/if}}
+  </figcaption>
+</figure>
