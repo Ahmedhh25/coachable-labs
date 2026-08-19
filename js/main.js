@@ -264,6 +264,70 @@
     io.observe(el);
   }
 
+  /* ---------- Track strips: gentle auto-advance on small screens ----------
+     Below 1024px the five track cards become a horizontal strip. It nudges
+     itself along one card at a time so the row visibly reads as scrollable,
+     and hands over permanently the first time anyone touches, swipes, scrolls
+     or tabs into it: you can always take it faster yourself, and once you do
+     it never fights you for control again.
+
+     Off entirely under reduced motion, and paused whenever the strip is off
+     screen or the tab is in the background. */
+  [].slice.call(document.querySelectorAll(".track-grid")).forEach(function (strip) {
+    var timer = null;
+    var surrendered = false;
+
+    function isStrip() {
+      return window.matchMedia("(max-width: 1024px)").matches;
+    }
+
+    function cardStep() {
+      var card = strip.querySelector(".track-card");
+      if (!card) return 0;
+      var gap = parseFloat(getComputedStyle(strip).columnGap) || 14;
+      return card.offsetWidth + gap;
+    }
+
+    function pause() {
+      if (timer) { clearInterval(timer); timer = null; }
+    }
+
+    function surrender() {
+      surrendered = true;
+      pause();
+    }
+
+    function play() {
+      if (surrendered || timer || reduceMotion || !isStrip()) return;
+      timer = setInterval(function () {
+        if (document.hidden) return;
+        var step = cardStep();
+        if (!step) return;
+        var atEnd = strip.scrollLeft + strip.clientWidth >= strip.scrollWidth - 8;
+        strip.scrollTo({ left: atEnd ? 0 : strip.scrollLeft + step, behavior: "smooth" });
+      }, 3800);
+    }
+
+    ["pointerdown", "touchstart", "wheel", "keydown"].forEach(function (evt) {
+      strip.addEventListener(evt, surrender, { passive: true });
+    });
+    strip.addEventListener("focusin", surrender);
+
+    window.addEventListener("resize", function () {
+      if (!isStrip()) pause(); else play();
+    });
+
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) play(); else pause();
+        });
+      }, { threshold: 0.4 }).observe(strip);
+    } else {
+      play();
+    }
+  });
+
   /* ---------- Recognition rows: driven by scroll position ----------
      Not a one-shot entrance. Each row reports how far it has travelled up the
      viewport as --lit, from 0 to 1, and the CSS hangs the dot, the rule, the

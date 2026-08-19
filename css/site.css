@@ -216,9 +216,11 @@ html, body { overflow-x: clip; }
    the sentence gets broken across cells. */
 .recognition-list li {
   --lift: 0px;
+  /* The dot is centred on the first line, so it has to track the row padding. */
+  --pad-y: 18px;
   position: relative;
   margin: 0 -20px;
-  padding: 18px 20px 18px 50px;
+  padding: var(--pad-y) 20px var(--pad-y) 50px;
   border-radius: 14px;
   transform: translateY(calc((1 - var(--lit, 1)) * 12px + var(--lift)));
   font-size: clamp(17px, 2.2vw, 20px);
@@ -243,7 +245,7 @@ html, body { overflow-x: clip; }
   content: "";
   position: absolute;
   left: 22px;
-  top: calc(18px + 0.75em - 5px);
+  top: calc(var(--pad-y) + 0.75em - 5px);
   width: 10px;
   height: 10px;
   border-radius: 999px;
@@ -963,8 +965,26 @@ html, body { overflow-x: clip; }
 @media (max-width: 1024px) {
   /* Form first, supporting column underneath. */
   .start-grid { grid-template-columns: 1fr; gap: 26px; }
-  .track-grid { grid-template-columns: repeat(2, 1fr); }
-  .track-grid-full { grid-template-columns: repeat(2, 1fr); }
+  /* The tracks turn into a horizontal strip here rather than dropping to two
+     columns. Cards are sized so the next one always peeks in, which is the
+     whole affordance: the row reads as scrollable without needing arrows.
+     The strip bleeds to the screen edges so cards run off the side rather
+     than stopping short in a gutter. */
+  .track-grid, .track-grid-full {
+    display: flex;
+    grid-template-columns: none;
+    gap: 16px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scroll-padding-left: 32px;
+    margin: 30px -32px 24px;
+    padding: 4px 32px 10px;
+    scrollbar-width: none;
+  }
+  .track-grid::-webkit-scrollbar, .track-grid-full::-webkit-scrollbar { display: none; }
+  .track-card { flex: 0 0 42%; scroll-snap-align: start; }
   .coach-grid { grid-template-columns: repeat(2, 1fr); }
   .footer-cols { flex-wrap: wrap; gap: 32px; }
 }
@@ -993,7 +1013,16 @@ html, body { overflow-x: clip; }
   .page-head, .service-hero { padding-top: 64px; }
   .container { padding: 0 20px; }
 
-  .track-grid, .track-grid-full { grid-template-columns: 1fr; gap: 16px; }
+  /* One card at a time from here down, with the next one peeking. */
+  .track-grid, .track-grid-full {
+    gap: 14px;
+    scroll-padding-left: 20px;
+    margin: 30px -20px 24px;
+    padding: 4px 20px 8px;
+  }
+  .track-card { flex-basis: 78%; }
+  /* Sticky hover has nowhere to go on a touch screen. */
+  .track-card:hover { transform: none; box-shadow: 0 8px 22px rgba(18, 17, 17, 0.05); }
   .coach-grid, .coach-grid-preview { grid-template-columns: 1fr; }
   .testimonial-row { grid-template-columns: 1fr; }
 
@@ -1019,7 +1048,7 @@ html, body { overflow-x: clip; }
   .page-start .floating-cta { display: none; }
 
   .boundary-section .container { padding-left: 20px; }
-  .recognition-list li { margin: 0 -12px; padding: 16px 12px 16px 42px; }
+  .recognition-list li { --pad-y: 16px; margin: 0 -12px; padding: var(--pad-y) 12px var(--pad-y) 42px; }
   .recognition-list li::before { left: 14px; }
   .recognition-list li::after { left: 12px; right: 12px; }
   .credential-row { grid-template-columns: 1fr; gap: 22px; }
@@ -1040,6 +1069,8 @@ html, body { overflow-x: clip; }
   .track-card, .coach-card, .compare-col { padding: 20px 18px; }
   .form-card { padding: 22px 16px 20px; }
   .track-media { margin: -20px -18px 16px; }
+  .track-grid, .track-grid-full { margin-left: -16px; margin-right: -16px; padding-left: 16px; padding-right: 16px; scroll-padding-left: 16px; }
+  .track-card { flex-basis: 82%; }
   .cta-block { padding: 24px 0 52px; }
   .cta-panel { border-radius: 26px; padding: 44px 18px; }
   .step-list li { padding-left: 48px; }
