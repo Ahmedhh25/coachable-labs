@@ -1,9 +1,16 @@
-<!-- CTABlock (§3.1). Heading and body vary per page; the two actions never do. -->
+<!-- CTABlock (§3.1). Heading and body vary per page; the two actions never do.
+     Built on the site's own teal panel treatment, which the restructure had
+     otherwise left unused. -->
 <section class="cta-block" id="contact">
-  <div class="container narrow center-col">
-    <h2 class="cta-heading">{{ctaHeading}}</h2>
-    <p class="cta-body">{{ctaBody}}</p>
-    <a href="/start/" class="btn btn-teal btn-block cta-primary">Tell us what's going on <span class="arrow">&#8599;</span></a>
-    <a href="/book-a-call/" class="cta-secondary">Or book a 30-minute call</a>
+  <div class="container">
+    <div class="cta-panel">
+      <span class="cta-glow" aria-hidden="true"></span>
+      <div class="cta-panel-inner">
+        <h2 class="cta-heading">{{ctaHeading}}</h2>
+        <p class="cta-body">{{ctaBody}}</p>
+        <a href="/start/" class="btn btn-black cta-primary">Tell us what's going on <span class="arrow">&#8599;</span></a>
+        <a href="/book-a-call/" class="cta-secondary">Or book a 20-minute call</a>
+      </div>
+    </div>
   </div>
 </section>

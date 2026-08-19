@@ -17,7 +17,7 @@ Nothing is installed and there are no dependencies.
 ```
 src/site.json          site-wide values, and the flags below
 src/layout.html        the <html> document every page is poured into
-src/partials/          shared components — header, footer, cards, CTA block
+src/partials/          shared components - header, footer, cards, CTA block
 src/pages/             one file per route: JSON front matter, then the body
 ```
 
@@ -57,19 +57,27 @@ reminder for each one that is still false.
 | ------------------- | ---------------------------------------------------------------------------------------- |
 | `coachesReady`      | `/about/` is built but nothing links to it, and the coach block on the home page is hidden |
 | `testimonialsReady` | Testimonial slots on the home page and the service pages render nothing                    |
-| `bookingEmbed`      | `/book-a-call/` shows the email and phone fallback instead of a scheduler                  |
+| `priceReady`        | No fee appears anywhere: not on `/how-it-works/`, not in the FAQ, not in schema             |
+| `bookingEmbed`      | `/book-a-call/` shows only the direct link and contact details, with no embedded scheduler |
 
 Flip a flag only once the real material is in place.
 
 ## Still outstanding
 
-- **[COACH PHOTOS]** — real photographs, credentials and backgrounds, and
+- **[COACH PHOTOS]** - real photographs, credentials and backgrounds, and
   confirmation of which people deliver sessions. See the comment at the top of
   `src/pages/about.html`.
-- **[TESTIMONIALS]** — quotes from the twelve programme graduates. Nothing is
+- **[TESTIMONIALS]** - quotes from the twelve programme graduates. Nothing is
   written until they exist.
-- **[BOOKING TOOL]** — which scheduler powers `/book-a-call/`.
-- **Session counts** for the Career and Leaders tracks, bracketed in
-  `src/pages/coaching/index.html`, `career.html` and `leaders.html`.
+- **[FRAMEWORK]** - `/approach/` no longer describes where the method comes from.
+  The section that did was inaccurate and was deleted, not rewritten: the
+  assessment covers five areas, not the seven the brief listed, and the
+  foundations are not being described publicly yet. The page still carries the
+  argument for working across everything at once, which is the part that was
+  true. Do not rebuild that section from the brief.
+- **[PRICING]** - the real fee or range. The $500 to $1,500 figure in the brief
+  was not Coachable Labs' pricing and has been removed from the page, the FAQ
+  and the schema. `/how-it-works/` explains how the fee is set without naming
+  one. Put a number back in all three places, or none.
 - **A page-specific `og:image`** for the home page at 1200×630. It currently
   falls back to the shared `assets/images/og-image.png`.

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Coachable Labs — multi-page components and layout.
+   Coachable Labs - multi-page components and layout.
 
    Loaded after styles.css. styles.css holds the design tokens and the visual
    language of the original single page; everything the restructure introduced
@@ -124,10 +124,20 @@ html, body { overflow-x: clip; }
 
 /* ---------- 2. Page furniture ------------------------------------------- */
 
-/* The home H1 is longer than the one it replaced. Scaled rather than shortened,
-   so it stays inside four lines at 320px (§4.1). */
-.hero-title { font-size: clamp(32px, 8.5vw, 72px); }
-.hero { padding: 150px 0 120px; }
+/* The home headline runs left rather than centred: at 25 words a centred block
+   stacks into a narrow tower, where a left-set one can use the full measure. */
+.hero { padding: 150px 0 120px; text-align: left; }
+.hero-inner { max-width: 1000px; }
+.hero-title {
+  font-size: clamp(28px, 5vw, 46px);
+  line-height: 1.14;
+  margin-bottom: 26px;
+}
+.hero-sub {
+  max-width: 58ch;
+  margin: 0 0 34px;
+}
+.hero-ctas { justify-content: flex-start; }
 
 .page-head { padding-top: 96px; }
 
@@ -192,29 +202,79 @@ html, body { overflow-x: clip; }
 }
 .inline-link:hover { color: var(--near-black); }
 
-.recognition-list, .related-list, .reassurance-list, .compare-list, .sector-list {
+.recognition-list, .related-list, .reassurance-list, .compare-list {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
+/* The lines a visitor is meant to see themselves in. Plain rows: body sans, a
+   teal dot, a hairline between each. The colour and movement come from the
+   marker sweep below, not from boxing them up.
+
+   Do not set display:grid on the li. Each <em> becomes its own grid item and
+   the sentence gets broken across cells. */
 .recognition-list li {
+  --lift: 0px;
+  position: relative;
+  margin: 0 -20px;
+  padding: 18px 20px 18px 50px;
+  border-radius: 14px;
+  transform: translateY(calc((1 - var(--lit, 1)) * 12px + var(--lift)));
   font-size: clamp(17px, 2.2vw, 20px);
   line-height: 1.5;
   color: var(--near-black);
-  padding: 16px 0 16px 30px;
-  border-bottom: 1px solid var(--line-soft);
-  position: relative;
+  transition: background 0.45s ease, box-shadow 0.45s ease;
 }
+
+/* The row you are level with lifts and takes a soft teal wash, the same
+   treatment the process steps use for the step you have reached. */
+.recognition-list li.is-active {
+  --lift: -3px;
+  background: linear-gradient(90deg, rgba(70, 189, 198, 0.16), rgba(70, 189, 198, 0) 66%);
+  box-shadow: 0 12px 28px rgba(42, 143, 151, 0.1);
+}
+.recognition-list li.is-active::before {
+  background: #2a8f97;
+  box-shadow: 0 0 0 5px rgba(70, 189, 198, 0.22);
+}
+
 .recognition-list li::before {
   content: "";
   position: absolute;
-  left: 2px;
-  top: 26px;
+  left: 22px;
+  top: calc(18px + 0.75em - 5px);
   width: 10px;
   height: 10px;
   border-radius: 999px;
   background: var(--teal);
+  transform: scale(calc(0.3 + var(--lit, 1) * 0.7));
+  transition: background 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* The hairline under each row, drawn rather than simply present. */
+.recognition-list li::after {
+  content: "";
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: 0;
+  height: 1px;
+  background: rgba(18, 17, 17, 0.16);
+  transform: scaleX(var(--lit, 1));
+  transform-origin: left center;
+}
+
+/* The marker sweep. A background gradient rather than an absolutely positioned
+   bar, so it still works when the phrase wraps onto a second line. */
+.recognition-list em {
+  font-style: normal;
+  background-image: linear-gradient(rgba(70, 189, 198, 0.45), rgba(70, 189, 198, 0.45));
+  background-repeat: no-repeat;
+  background-position: 0 88%;
+  background-size: calc(var(--lit, 1) * 100%) 0.36em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
 
 .dot-list { list-style: none; margin: 0; padding: 0; }
@@ -251,45 +311,7 @@ html, body { overflow-x: clip; }
 }
 .related-list a:hover { color: var(--near-black); }
 
-.sector-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin: 18px 0 24px;
-}
-.sector-list li {
-  background: rgba(70, 189, 198, 0.16);
-  color: #14595f;
-  font-weight: 600;
-  font-size: 15px;
-  padding: 9px 16px;
-  border-radius: 999px;
-}
 
-.steps-compact { list-style: none; margin: 0 0 22px; padding: 0; }
-.steps-compact li {
-  display: flex;
-  align-items: baseline;
-  gap: 14px;
-  padding: 14px 0;
-  border-bottom: 1px solid var(--line-soft);
-  font-size: 17px;
-  color: var(--near-black);
-}
-.step-n {
-  flex: 0 0 auto;
-  width: 28px;
-  height: 28px;
-  border-radius: 999px;
-  background: var(--teal);
-  color: #fff;
-  font-size: 14px;
-  font-weight: 700;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  align-self: flex-start;
-}
 
 /* how-it-works reuses the scroll-driven step spine; its rows carry h2 here
    because the page has no intervening h2 to hang an h3 from (§3.3). */
@@ -310,6 +332,26 @@ html, body { overflow-x: clip; }
 
 .service-hero { padding-top: 96px; }
 .service-cta { margin-top: 12px; min-height: 48px; }
+
+/* Copy first in source order, so the H1 is the first thing rendered on a phone
+   even though the photo sits beside it on a desktop (§4.1). */
+.service-hero-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 44px;
+  align-items: center;
+}
+.service-hero-media {
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  background: rgba(70, 189, 198, 0.12);
+}
+.service-hero-media img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  display: block;
+}
 
 .hero-quiet-link, .footer-quiet-link, .cta-secondary {
   font-weight: 600;
@@ -372,6 +414,21 @@ html, body { overflow-x: clip; }
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 .track-card:hover { transform: translateY(-3px); box-shadow: 0 14px 34px rgba(18, 17, 17, 0.1); }
+
+/* Fixed aspect ratio so the card never reflows as the photo loads, and cover so
+   portrait and landscape sources both crop cleanly. */
+.track-media {
+  margin: -24px -22px 18px;
+  border-radius: var(--radius-card) var(--radius-card) 0 0;
+  overflow: hidden;
+  background: rgba(70, 189, 198, 0.12);
+}
+.track-media img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+}
 
 .track-name {
   font-family: var(--font-sans);
@@ -515,15 +572,45 @@ html, body { overflow-x: clip; }
 
 /* ---------- 7. Forms ---------------------------------------------------- */
 
-.intake-form { margin: 30px 0 0; max-width: 760px; }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.form-field { display: flex; flex-direction: column; margin-bottom: 18px; }
+/* Layout: the heading spans the page, then the form and a supporting column.
+   The form is first in source order so it leads on a phone. */
+.start-head { max-width: 46em; margin-bottom: 34px; }
+.start-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.65fr);
+  gap: 32px;
+  align-items: start;
+}
+
+.form-card {
+  position: relative;
+  overflow: hidden;
+  background: #fffefa;
+  border: 1px solid var(--line-soft);
+  border-radius: 24px;
+  padding: 34px 32px 30px;
+  box-shadow: 0 20px 50px rgba(18, 17, 17, 0.07);
+}
+/* A teal edge along the top, so the card reads as the active thing on the page. */
+.form-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--teal), #2a8f97);
+}
+
+.intake-form { margin: 0; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.form-field { display: flex; flex-direction: column; margin-bottom: 20px; }
 
 .form-field label {
-  font-size: 15px;
+  font-size: 14.5px;
   font-weight: 600;
   color: var(--near-black);
-  margin-bottom: 7px;
+  margin-bottom: 8px;
 }
 .field-optional { font-weight: 400; color: var(--gray-500); }
 
@@ -535,17 +622,51 @@ html, body { overflow-x: clip; }
   font-size: 16px;
   line-height: 1.5;
   color: var(--near-black);
-  background: var(--form-bg);
-  border: 1px solid var(--line-soft);
-  border-radius: 10px;
-  padding: 13px 14px;
-  min-height: 48px;
+  background: #fff;
+  border: 1.5px solid rgba(18, 17, 17, 0.14);
+  border-radius: 12px;
+  padding: 13px 15px;
+  min-height: 50px;
   width: 100%;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
 }
-.intake-form textarea { min-height: 160px; resize: vertical; }
-.intake-form select { appearance: none; background-image: none; }
-.intake-form input:focus, .intake-form select:focus, .intake-form textarea:focus {
+.intake-form textarea { min-height: 170px; resize: vertical; }
+
+.intake-form input::placeholder,
+.intake-form textarea::placeholder { color: var(--gray-400); }
+
+.intake-form input:hover,
+.intake-form select:hover,
+.intake-form textarea:hover { border-color: rgba(18, 17, 17, 0.28); }
+
+.intake-form input:focus,
+.intake-form select:focus,
+.intake-form textarea:focus {
+  outline: none;
   border-color: var(--teal);
+  box-shadow: 0 0 0 4px rgba(70, 189, 198, 0.22);
+}
+
+/* The select had appearance:none and no replacement indicator, which left it
+   with no arrow at all. This draws one. */
+.select-wrap { position: relative; display: flex; }
+.intake-form select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 46px;
+  cursor: pointer;
+}
+.select-wrap::after {
+  content: "";
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  width: 12px;
+  height: 8px;
+  margin-top: -4px;
+  pointer-events: none;
+  background: var(--near-black);
+  clip-path: polygon(0 0, 12px 0, 6px 8px);
 }
 
 .field-help { font-size: 14px; color: var(--gray-500); margin: 8px 0 0; }
@@ -558,47 +679,123 @@ html, body { overflow-x: clip; }
 .form-field.has-error input,
 .form-field.has-error textarea { border-color: #b3261e; border-width: 2px; }
 
-.form-submit { min-height: 52px; margin-top: 6px; }
+.form-submit { min-height: 56px; margin-top: 8px; font-size: 16px; }
 .form-status { font-size: 15px; color: var(--gray-700); margin: 14px 0 0; min-height: 22px; }
 
-.form-confirm {
-  margin: 30px 0 0;
-  background: rgba(70, 189, 198, 0.12);
-  border: 1px solid rgba(70, 189, 198, 0.4);
-  border-radius: var(--radius-card);
-  padding: 28px 26px;
-  max-width: 760px;
+.form-confirm { text-align: center; padding: 14px 6px 6px; }
+.confirm-tick {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  height: 58px;
+  border-radius: 999px;
+  background: rgba(70, 189, 198, 0.16);
+  color: #1f7f87;
+  margin-bottom: 18px;
 }
-.confirm-heading { font-family: var(--font-serif); font-weight: 400; font-size: 30px; margin: 0 0 14px; }
-.form-confirm p { font-size: 17px; line-height: 1.6; color: var(--gray-700); margin: 0 0 12px; }
+.confirm-heading { font-family: var(--font-serif); font-weight: 400; font-size: 34px; margin: 0 0 14px; }
+.form-confirm p { font-size: 16.5px; line-height: 1.6; color: var(--gray-700); margin: 0 auto 12px; max-width: 34em; }
 .confirm-alt { font-size: 15.5px !important; color: var(--gray-500) !important; }
 
-.reassurance-list { margin: 34px 0 0; padding: 22px 0 0; border-top: 1px solid var(--line-soft); }
+/* ---------- The supporting column ---------- */
+
+.aside-card {
+  background: rgba(70, 189, 198, 0.1);
+  border: 1px solid rgba(70, 189, 198, 0.28);
+  border-radius: 20px;
+  padding: 26px 24px;
+}
+.aside-title {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: #14595f;
+  margin: 0 0 20px;
+}
+
+.start-steps { list-style: none; margin: 0; padding: 0; }
+.start-steps li {
+  position: relative;
+  display: flex;
+  gap: 14px;
+  padding-bottom: 22px;
+}
+.start-steps li:last-child { padding-bottom: 0; }
+/* A connector between the markers, so the three read as a sequence. */
+.start-steps li:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  left: 13px;
+  top: 30px;
+  bottom: 8px;
+  width: 2px;
+  background: rgba(70, 189, 198, 0.4);
+}
+.start-step-n {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--teal);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.start-step-copy { font-size: 15px; line-height: 1.5; color: var(--gray-700); }
+.start-step-copy strong { display: block; color: var(--near-black); font-size: 15.5px; margin-bottom: 2px; }
+
+.reassurance-list { margin: 24px 0 0; padding: 0; }
 .reassurance-list li {
-  font-size: 15.5px;
-  line-height: 1.6;
+  font-size: 14.5px;
+  line-height: 1.55;
   color: var(--gray-500);
-  margin-bottom: 10px;
-  padding-left: 22px;
+  margin-bottom: 12px;
+  padding-left: 24px;
   position: relative;
 }
 .reassurance-list li::before {
   content: "";
   position: absolute;
-  left: 2px;
-  top: 9px;
-  width: 7px;
-  height: 7px;
+  left: 3px;
+  top: 7px;
+  width: 8px;
+  height: 8px;
   border-radius: 999px;
-  background: var(--teal);
+  border: 2px solid var(--teal);
+}
+.aside-alt { font-size: 14.5px; color: var(--gray-500); margin: 20px 0 0; }
+
+/* This page opens tighter than the rest of the site: the calendar is what the
+   page is for, and it has to be visible without scrolling for it. */
+.page-book .page-head { padding-top: 56px; padding-bottom: 26px; }
+.page-book .booking-section { padding-top: 0; }
+.page-book .page-lede { margin-bottom: 0; }
+
+/* Cal.com resizes the iframe itself once it loads. The min-height stops the
+   page collapsing and then jumping while that happens, and there is no nested
+   scroll container: the embed grows and the page scrolls normally. */
+.booking-embed {
+  min-height: 620px;
+  margin-bottom: 24px;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  background: rgba(70, 189, 198, 0.06);
 }
 
+/* Sits outside the embed so it is still there if the script never loads. */
 .booking-fallback {
-  background: #fffdf2;
-  border: 1px solid var(--line-soft);
-  border-radius: var(--radius-card);
-  padding: 28px 26px;
+  border-top: 1px solid var(--line-soft);
+  padding-top: 20px;
 }
+.booking-fallback p { margin: 0 0 8px; }
 
 /* ---------- 8. Comparison lists ----------------------------------------- */
 
@@ -640,6 +837,8 @@ html, body { overflow-x: clip; }
 
 /* ---------- 9. Pricing -------------------------------------------------- */
 
+/* Currently unused: no fee is published anywhere. Kept ready for the real
+   figure, which should read as a heading-weight element when it lands. */
 .price-figure {
   font-family: var(--font-serif) !important;
   font-size: clamp(32px, 5.5vw, 48px) !important;
@@ -650,30 +849,97 @@ html, body { overflow-x: clip; }
 
 /* ---------- 10. CTABlock ------------------------------------------------ */
 
-.cta-block {
-  padding: 76px 0;
-  margin-top: 20px;
-  background: rgba(70, 189, 198, 0.1);
-  border-top: 1px solid rgba(70, 189, 198, 0.3);
+/* The pale teal band this replaced read as a footer, not as the last thing the
+   page asks of you. It is now the site's own panel treatment: full teal, the
+   signature vertical striping, and the big panel radius. */
+.cta-block { padding: 40px 0 76px; }
+
+.cta-panel {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-panel);
+  padding: 88px 48px;
+  text-align: center;
+  background: var(--teal);
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.07) 0px,
+    rgba(255, 255, 255, 0.07) 1px,
+    transparent 1px,
+    transparent calc((100% - 5px) / 6 + 1px)
+  );
+  box-shadow: 0 30px 70px rgba(42, 143, 151, 0.28);
 }
+
+/* A slow wash of light drifting behind the copy, so the panel is never quite
+   static. Killed under reduced motion, where it rests centred. */
+.cta-glow {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 640px;
+  height: 640px;
+  margin: -320px 0 0 -320px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(255, 249, 224, 0.5), rgba(255, 249, 224, 0) 68%);
+  animation: cta-drift 15s ease-in-out infinite alternate;
+}
+@keyframes cta-drift {
+  from { transform: translate(-16%, -12%) scale(0.9); opacity: 0.5; }
+  to { transform: translate(16%, 12%) scale(1.15); opacity: 0.85; }
+}
+
+.cta-panel-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Near-black on teal, not cream: cream on this teal is 2:1 and fails outright.
+   Near-black clears 7:1 and the panel still reads as teal. */
 .cta-heading {
   font-family: var(--font-serif);
   font-weight: 400;
-  font-size: clamp(28px, 4.4vw, 42px);
-  line-height: 1.15;
-  margin: 0 0 14px;
-  text-align: center;
+  font-size: clamp(32px, 5.2vw, 54px);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  margin: 0 0 16px;
+  color: var(--near-black);
 }
 .cta-body {
-  font-size: 17px;
+  font-size: clamp(17px, 2vw, 19px);
   line-height: 1.6;
-  color: var(--gray-700);
-  max-width: 40em;
-  text-align: center;
-  margin: 0 0 26px;
+  color: #16292b;
+  max-width: 34em;
+  margin: 0 0 32px;
 }
-.cta-primary { max-width: 380px; min-height: 52px; }
-.cta-secondary { margin-top: 16px; }
+
+.cta-primary {
+  max-width: 380px;
+  min-height: 56px;
+  font-size: 16px;
+  padding: 16px 32px;
+  box-shadow: 0 12px 28px rgba(18, 17, 17, 0.28);
+}
+.cta-secondary {
+  margin-top: 18px;
+  color: var(--near-black);
+  text-decoration-thickness: 2px;
+}
+.cta-secondary:hover { color: #fff; }
+
+/* The button is both staggered in and magnetic on hover. Without this the
+   entrance easing (0.8s) would also govern the pointer tracking and make it
+   feel laggy, so the transform gets its own timing. */
+.cta-primary.magnetic {
+  transition:
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.7s ease,
+    filter 0.18s ease;
+}
 
 /* ---------- 11. Footer -------------------------------------------------- */
 
@@ -681,6 +947,11 @@ html, body { overflow-x: clip; }
 .footer-col { display: flex; flex-direction: column; gap: 10px; min-width: 150px; }
 .footer-col-title { font-weight: 700; font-size: 15px; margin: 0 0 4px; }
 .footer-col a { min-height: 32px; display: inline-flex; align-items: center; }
+/* styles.css sets .footer-col a { color: teal }, which is more specific than
+   .btn-teal and left the footer button with teal text on a teal background.
+   Any button placed in a footer column needs its own colour back. */
+.footer-col .btn { color: #fff; }
+.footer-col .btn::after { display: none; }
 .footer-note { font-size: 14px; line-height: 1.55; color: var(--gray-500); margin: 0; max-width: 26ch; }
 .footer-col-cta .btn { align-self: flex-start; }
 .footer-quiet-link { font-size: 14.5px; }
@@ -690,6 +961,8 @@ html, body { overflow-x: clip; }
    ========================================================================== */
 
 @media (max-width: 1024px) {
+  /* Form first, supporting column underneath. */
+  .start-grid { grid-template-columns: 1fr; gap: 26px; }
   .track-grid { grid-template-columns: repeat(2, 1fr); }
   .track-grid-full { grid-template-columns: repeat(2, 1fr); }
   .coach-grid { grid-template-columns: repeat(2, 1fr); }
@@ -728,6 +1001,10 @@ html, body { overflow-x: clip; }
      the most common mobile layout failure (§4.14). */
   .compare-grid { grid-template-columns: 1fr; gap: 16px; }
 
+  /* Photo drops below the copy, so the H1 is still the first thing rendered. */
+  .service-hero-grid { grid-template-columns: 1fr; gap: 28px; }
+  .service-hero-media img { aspect-ratio: 16 / 10; }
+
   .form-row { grid-template-columns: 1fr; gap: 0; }
   .cta-primary, .service-cta, .btn-block { width: 100%; max-width: none; min-height: 48px; }
   .hero-ctas { flex-direction: column; align-items: stretch; }
@@ -742,19 +1019,174 @@ html, body { overflow-x: clip; }
   .page-start .floating-cta { display: none; }
 
   .boundary-section .container { padding-left: 20px; }
-  .recognition-list li { padding-left: 26px; }
-  .recognition-list li::before { top: 24px; }
+  .recognition-list li { margin: 0 -12px; padding: 16px 12px 16px 42px; }
+  .recognition-list li::before { left: 14px; }
+  .recognition-list li::after { left: 12px; right: 12px; }
+  .credential-row { grid-template-columns: 1fr; gap: 22px; }
+  .booking-embed { min-height: 560px; }
+  .page-book .page-head { padding-top: 36px; padding-bottom: 20px; }
+
+  .cta-panel { border-radius: 32px; padding: 56px 24px; }
+  .cta-glow { width: 420px; height: 420px; margin: -210px 0 0 -210px; }
+
+  .form-card { padding: 26px 20px 24px; border-radius: 20px; }
+  .start-head { margin-bottom: 24px; }
 }
 
 @media (max-width: 480px) {
   .container { padding: 0 16px; }
   .hero { padding: 72px 0 64px; }
   .page-title { font-size: clamp(28px, 8vw, 36px); }
-  .track-card, .coach-card, .compare-col, .form-confirm, .booking-fallback { padding: 20px 18px; }
-  .cta-block { padding: 52px 0; }
+  .track-card, .coach-card, .compare-col { padding: 20px 18px; }
+  .form-card { padding: 22px 16px 20px; }
+  .track-media { margin: -20px -18px 16px; }
+  .cta-block { padding: 24px 0 52px; }
+  .cta-panel { border-radius: 26px; padding: 44px 18px; }
   .step-list li { padding-left: 48px; }
-  .sector-list { gap: 8px; }
-  .sector-list li { font-size: 14px; padding: 8px 13px; }
+}
+
+/* ==========================================================================
+   13. Scroll-in motion
+
+   The text-heavy pages (how it works, approach, questions, coaching vs
+   therapy) are long runs of prose with nothing to hold the eye. These give
+   each block a small entrance as it arrives.
+
+   Every class here is applied by js/main.js and never written into the
+   markup, so with JavaScript off the page renders fully visible instead of
+   invisible. The script also skips all of it entirely under
+   prefers-reduced-motion; the media query at the end is the second belt.
+   ========================================================================== */
+
+.anim-up, .anim-left, .anim-right, .anim-pop {
+  opacity: 0;
+  transition:
+    opacity 0.7s ease,
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.anim-up { transform: translateY(26px); }
+.anim-left { transform: translateX(-30px); }
+.anim-right { transform: translateX(30px); }
+.anim-pop { transform: scale(0.94); }
+
+.anim-up.is-visible,
+.anim-left.is-visible,
+.anim-right.is-visible,
+.anim-pop.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* A short rule that draws itself under each section heading as the section
+   arrives. It is the one repeated motif, so the pages feel related. */
+.anim-keyline { position: relative; padding-bottom: 16px; }
+.anim-keyline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 56px;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--teal);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.18s;
+}
+.anim-keyline.is-visible::after { transform: scaleX(1); }
+.section-heading.center.anim-keyline::after {
+  left: 50%;
+  margin-left: -28px;
+  transform-origin: center;
+}
+
+/* The pricing figure is the one number on the site, so it gets its own beat. */
+.price-figure.anim-pop { transition-duration: 0.5s, 0.7s; }
+
+/* ---------- Recognition rows ----------
+   These are the lines a visitor is meant to see themselves in, so they arrive
+   one at a time from the left rather than as a block, and the dot lands last. */
+@media (hover: hover) and (pointer: fine) {
+  /* A halo rather than a scale: `transform` on this dot is driven by scroll
+     position every frame, so a hover transform would be overwritten. */
+  .recognition-list li:hover::before {
+    background: #2a8f97;
+    box-shadow: 0 0 0 6px rgba(70, 189, 198, 0.2);
+  }
+}
+
+/* The stat pair that carries the experience claim. */
+.credential-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+}
+.credential {
+  border-left: 4px solid var(--teal);
+  padding-left: 20px;
+}
+.credential-figure {
+  display: block;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(32px, 5vw, 46px);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--near-black);
+}
+.credential-label {
+  display: block;
+  font-size: 15.5px;
+  line-height: 1.5;
+  color: var(--gray-700);
+  margin-top: 8px;
+  max-width: 24em;
+}
+
+
+/* ---------- The two approach diagrams ----------
+   The whole argument of that page is in these two pictures, so the tracks draw
+   themselves: four lines running out to nothing, then four curves arriving at
+   one point. Path lengths are measured at runtime in js/main.js. */
+/* styles.css leaves the tracks, endpoints and hub hidden until a class is added,
+   which used to come from `reveal`. Default them all to drawn, so the diagram is
+   complete with JavaScript off and under reduced motion. The .diagram-anim rules
+   below re-hide them only when the script is actually going to draw them. */
+.dg-split path, .dg-join path { stroke-dashoffset: 0; }
+.dg-ends circle { opacity: 1; }
+.dg-hub, .dg-hub-ring { transform: scale(1); }
+
+.diagram-anim .dg-labels text {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.diagram-anim.is-drawn .dg-labels text { opacity: 1; }
+
+/* styles.css drives these off a .is-visible class the figures no longer carry,
+   so the rules below take the endpoints over completely. Higher specificity and
+   a later file, so they win outright rather than by accident. */
+.diagram-anim .dg-ends circle,
+.diagram-anim .dg-hub,
+.diagram-anim .dg-hub-ring {
+  opacity: 0;
+  transform: scale(0);
+  transform-box: fill-box;
+  transform-origin: center;
+  transition:
+    opacity 0.4s ease,
+    transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.diagram-anim.is-drawn .dg-ends circle,
+.diagram-anim.is-drawn .dg-hub { opacity: 1; transform: scale(1); }
+.diagram-anim.is-drawn .dg-hub-ring { opacity: 0.4; transform: scale(1); }
+
+/* Once everything has arrived the hub keeps a slow pulse: the one point the
+   whole diagram is making. */
+.diagram-anim.is-drawn .dg-hub-ring { animation: hub-pulse 3s ease-in-out 2.2s infinite; }
+@keyframes hub-pulse {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.12; transform: scale(1.3); }
 }
 
 /* ---------- Reduced motion additions ------------------------------------ */
@@ -762,4 +1194,15 @@ html, body { overflow-x: clip; }
 @media (prefers-reduced-motion: reduce) {
   .step-list li h2 { opacity: 1; translate: none; }
   .track-card:hover { transform: none; }
+  .anim-up, .anim-left, .anim-right, .anim-pop { opacity: 1; transform: none; }
+  .anim-keyline { padding-bottom: 0; }
+  .anim-keyline::after { display: none; }
+
+  .cta-glow { animation: none; transform: none; opacity: 0.6; }
+  /* --lit is never set under reduced motion, so its fallback of 1 already
+     leaves every row finished. Nothing to undo here. */
+  .diagram-anim .dg-labels text { opacity: 1; }
+  .diagram-anim .dg-ends circle,
+  .diagram-anim .dg-hub { opacity: 1; transform: none; }
+  .diagram-anim .dg-hub-ring { opacity: 0.4; transform: none; animation: none; }
 }

@@ -1,4 +1,4 @@
-// Coachable Labs — site behaviour + motion layer.
+// Coachable Labs - site behaviour + motion layer.
 // Every block guards on the elements it needs, so this one file serves every page.
 (function () {
   "use strict";
@@ -68,30 +68,39 @@
     }, 500);
   }
 
-  /* ---------- Split the hero heading into masked words ---------- */
+  /* ---------- Split the hero heading into masked words ----------
+     Walks nested elements, not just bare text children: the home headline is
+     split across two spans, and both halves need to animate. */
   document.querySelectorAll(".hero-title").forEach(function (el) {
     var wordIndex = 0;
-    [].slice.call(el.childNodes).forEach(function (child) {
-      if (child.nodeType !== 3 || !child.textContent.trim()) return;
-      var frag = document.createDocumentFragment();
-      child.textContent.split(/(\s+)/).forEach(function (part) {
-        if (!part) return;
-        if (/^\s+$/.test(part)) {
-          frag.appendChild(document.createTextNode(" "));
-          return;
-        }
-        var mask = document.createElement("span");
-        mask.className = "word";
-        var inner = document.createElement("span");
-        inner.className = "word-inner";
-        inner.textContent = part;
-        inner.style.transitionDelay = (0.08 + wordIndex * 0.05).toFixed(2) + "s";
-        mask.appendChild(inner);
-        frag.appendChild(mask);
-        wordIndex++;
+
+    (function split(parent) {
+      [].slice.call(parent.childNodes).forEach(function (child) {
+        if (child.nodeType === 1) { split(child); return; }
+        if (child.nodeType !== 3 || !child.textContent.trim()) return;
+
+        var frag = document.createDocumentFragment();
+        child.textContent.split(/(\s+)/).forEach(function (part) {
+          if (!part) return;
+          if (/^\s+$/.test(part)) {
+            frag.appendChild(document.createTextNode(" "));
+            return;
+          }
+          var mask = document.createElement("span");
+          mask.className = "word";
+          var inner = document.createElement("span");
+          inner.className = "word-inner";
+          inner.textContent = part;
+          // Capped, or the last words of a 25-word headline arrive far too late.
+          inner.style.transitionDelay = (0.08 + Math.min(wordIndex, 22) * 0.035).toFixed(3) + "s";
+          mask.appendChild(inner);
+          frag.appendChild(mask);
+          wordIndex++;
+        });
+        parent.replaceChild(frag, child);
       });
-      el.replaceChild(frag, child);
-    });
+    })(el);
+
     el.classList.add("words");
   });
 
@@ -110,67 +119,251 @@
     el.classList.add("is-visible");
   }
 
-  if ("IntersectionObserver" in window && revealEls.length) {
-    var observer = new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            makeVisible(entry.target);
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
-    );
+  var hasObserver = "IntersectionObserver" in window;
+  var observer = hasObserver
+    ? new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              makeVisible(entry.target);
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+      )
+    : null;
+
+  if (observer) {
     revealEls.forEach(function (el) { observer.observe(el); });
   } else {
     revealEls.forEach(makeVisible);
   }
 
-  /* ---------- Process steps: spine geometry + scroll-driven fill ---------- */
-  var stepList = document.getElementById("step-list");
-  var stepSpine = document.getElementById("step-spine");
-  var stepFill = document.getElementById("step-spine-fill");
-  var stepItems = stepList ? [].slice.call(stepList.children) : [];
+  /* ---------- Scroll-in motion for the text-heavy pages ----------
+     Pages like /how-it-works/, /approach/, /questions/ and
+     /coaching-vs-therapy/ are long runs of prose with nothing to hold the eye.
+     Rather than tagging every paragraph in the markup, the classes are applied
+     here: with JavaScript off nothing is hidden, and under reduced motion this
+     whole block is skipped.
+
+     Only elements starting below the fold are animated. Anything already on
+     screen at load would otherwise flash in. */
+  if (observer && !reduceMotion) {
+    var viewportH = window.innerHeight;
+
+    // [selector, variant, stagger siblings within the same parent]
+    var animGroups = [
+      [".section-heading", "up", false],
+      [".sub-heading", "up", false],
+      [".page-lede", "up", false],
+      ["main .section > .container > p", "up", false],
+      [".dot-list li, .related-list li, .reassurance-list li", "up", true],
+      [".faq-item", "up", true],
+      [".track-card, .coach-card, .contact-card, .testimonial", "up", true],
+      [".credential", "up", true],
+      [".price-figure", "pop", false],
+      [".booking-fallback, .form-confirm", "up", false],
+      // The panel arrives first, then its contents stagger in on top of it.
+      [".cta-panel", "pop", false],
+      [".cta-heading, .cta-body, .cta-primary, .cta-secondary", "up", true]
+    ];
+
+    var animate = function (el, variant) {
+      // Never double up on an element the markup already reveals, and leave the
+      // hero alone so the page opens on its own animation.
+      if (el.classList.contains("reveal")) return false;
+      if (el.closest(".hero, .site-header, .site-footer")) return false;
+      if (el.getBoundingClientRect().top < viewportH) return false;
+      el.classList.add("anim-" + variant);
+      observer.observe(el);
+      return true;
+    };
+
+    animGroups.forEach(function (group) {
+      var selector = group[0], variant = group[1], stagger = group[2];
+      var seen = [];
+
+      [].slice.call(document.querySelectorAll(selector)).forEach(function (el) {
+        if (!animate(el, variant)) return;
+        if (!stagger || !el.parentElement) return;
+        // Siblings arrive one after another rather than all at once.
+        var i = seen.filter(function (s) { return s === el.parentElement; }).length;
+        seen.push(el.parentElement);
+        if (i > 0) el.style.transitionDelay = (Math.min(i, 7) * 0.07).toFixed(2) + "s";
+      });
+    });
+
+    // The section headings carry the one repeated motif: a short rule that
+    // draws itself in underneath.
+    document.querySelectorAll(".section-heading.anim-up").forEach(function (el) {
+      el.classList.add("anim-keyline");
+    });
+
+    // The two comparison columns come in from opposite sides.
+    var compareCols = document.querySelectorAll(".compare-col");
+    if (compareCols.length === 2) {
+      ["left", "right"].forEach(function (side, i) {
+        var col = compareCols[i];
+        if (col.getBoundingClientRect().top < viewportH) return;
+        col.classList.add("anim-" + side);
+        observer.observe(col);
+      });
+    }
+
+    /* ---------- The two approach diagrams ----------
+       The argument of that page is in these two pictures, so the tracks draw
+       themselves: four lines running out to nothing, then four curves arriving
+       at a single point. Lengths are measured off the real geometry, so this
+       keeps working if the paths are ever redrawn. */
+    document.querySelectorAll(".diagram svg").forEach(function (svg) {
+      var figure = svg.closest(".diagram");
+      var paths = [].slice.call(svg.querySelectorAll(".dg-split path, .dg-join path"));
+      if (!paths.length) return;
+
+      figure.classList.add("diagram-anim");
+
+      paths.forEach(function (path, i) {
+        var length = path.getTotalLength();
+        path.style.strokeDasharray = length;
+        path.style.strokeDashoffset = length;
+        path.style.transition = "stroke-dashoffset 0.9s cubic-bezier(0.22, 1, 0.36, 1) " + (0.25 + i * 0.16).toFixed(2) + "s";
+      });
+
+      // Labels first, then each track, then the dot it lands on.
+      svg.querySelectorAll(".dg-labels text").forEach(function (label, i) {
+        label.style.transitionDelay = (i * 0.09).toFixed(2) + "s";
+      });
+      svg.querySelectorAll(".dg-ends circle").forEach(function (dot, i) {
+        dot.style.transitionDelay = (1.0 + i * 0.16).toFixed(2) + "s";
+      });
+      svg.querySelectorAll(".dg-hub, .dg-hub-ring").forEach(function (hub, i) {
+        hub.style.transitionDelay = (1.55 + i * 0.1).toFixed(2) + "s";
+      });
+
+      drawWhenSeen(figure, function () {
+        figure.classList.add("is-drawn");
+        paths.forEach(function (path) { path.style.strokeDashoffset = "0"; });
+      });
+    });
+  }
+
+  // Fires a one-shot callback the first time an element is well into view.
+  function drawWhenSeen(el, run) {
+    if (!("IntersectionObserver" in window)) return run();
+    var io = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          run();
+          io.disconnect();
+        });
+      },
+      { threshold: 0.25 }
+    );
+    io.observe(el);
+  }
+
+  /* ---------- Recognition rows: driven by scroll position ----------
+     Not a one-shot entrance. Each row reports how far it has travelled up the
+     viewport as --lit, from 0 to 1, and the CSS hangs the dot, the rule, the
+     marker sweep and a small lift off that single number. So the list keeps
+     moving the whole way past, and unwinds if you scroll back up.
+
+     --lit falls back to 1 everywhere it is used, so with JavaScript off or
+     under reduced motion every row simply renders finished. */
+  var recognitionRows = [].slice.call(document.querySelectorAll(".recognition-list li"));
+
+  function updateRecognition(vh) {
+    // Starts as the row clears the bottom of the screen, complete a little
+    // above the middle, so it finishes while the row is still being read.
+    var from = vh * 0.92;
+    var span = vh * 0.45;
+    // The row you are level with is picked the same way the process steps pick
+    // theirs: whichever sits nearest a line just below the viewport centre.
+    var line = vh * 0.5;
+    var nearest = -1;
+    var nearestGap = Infinity;
+
+    for (var i = 0; i < recognitionRows.length; i++) {
+      var rect = recognitionRows[i].getBoundingClientRect();
+      var p = (from - rect.top) / span;
+      p = p < 0 ? 0 : p > 1 ? 1 : p;
+      recognitionRows[i].style.setProperty("--lit", p.toFixed(3));
+
+      // Only rows actually on screen can be the active one.
+      if (rect.bottom > 0 && rect.top < vh) {
+        var gap = Math.abs(rect.top + rect.height / 2 - line);
+        if (gap < nearestGap) {
+          nearestGap = gap;
+          nearest = i;
+        }
+      }
+    }
+
+    for (var j = 0; j < recognitionRows.length; j++) {
+      recognitionRows[j].classList.toggle("is-active", j === nearest);
+    }
+  }
+
+  /* ---------- Process steps: spine geometry + scroll-driven fill ----------
+     Used by the four steps on the home page and the four on /how-it-works/, so
+     it handles any number of instances on a page rather than one fixed set. */
   // Distance from the top of a step row to the centre of its marker:
   // 22px of padding + half of the 34px marker.
   var MARKER_CENTER = 39;
-  var spineTop = 0, spineHeight = 0;
+
+  var stepGroups = [].slice.call(document.querySelectorAll(".step-wrap"))
+    .map(function (wrap) {
+      var list = wrap.querySelector(".step-list");
+      return {
+        spine: wrap.querySelector(".step-spine"),
+        fill: wrap.querySelector(".step-spine-fill"),
+        items: list ? [].slice.call(list.children) : [],
+        height: 0
+      };
+    })
+    .filter(function (g) { return g.spine && g.fill && g.items.length; });
 
   function layoutSpine() {
-    if (!stepItems.length || !stepSpine) return;
-    var first = stepItems[0];
-    var last = stepItems[stepItems.length - 1];
-    spineTop = first.offsetTop + MARKER_CENTER;
-    spineHeight = last.offsetTop + MARKER_CENTER - spineTop;
-    stepSpine.style.top = spineTop + "px";
-    stepSpine.style.height = spineHeight + "px";
+    stepGroups.forEach(function (g) {
+      var first = g.items[0];
+      var last = g.items[g.items.length - 1];
+      var top = first.offsetTop + MARKER_CENTER;
+      g.height = last.offsetTop + MARKER_CENTER - top;
+      g.spine.style.top = top + "px";
+      g.spine.style.height = g.height + "px";
+    });
   }
 
   function updateSteps(vh) {
-    if (!stepItems.length || !spineHeight) return;
     // Progress is measured against a line slightly below the viewport centre,
     // so a step lights up as you reach it rather than after it has gone past.
     var line = vh * 0.55;
-    var spineRect = stepSpine.getBoundingClientRect();
-    var p = (line - spineRect.top) / spineHeight;
-    p = p < 0 ? 0 : p > 1 ? 1 : p;
-    stepFill.style.height = (p * 100).toFixed(2) + "%";
 
-    var reached = -1;
-    stepItems.forEach(function (li, i) {
-      var center = li.getBoundingClientRect().top + MARKER_CENTER;
-      var done = center <= line;
-      li.classList.toggle("is-done", done);
-      if (done) reached = i;
-    });
-    stepItems.forEach(function (li, i) {
-      li.classList.toggle("is-active", i === reached);
+    stepGroups.forEach(function (g) {
+      if (!g.height) return;
+      var p = (line - g.spine.getBoundingClientRect().top) / g.height;
+      p = p < 0 ? 0 : p > 1 ? 1 : p;
+      g.fill.style.height = (p * 100).toFixed(2) + "%";
+
+      var reached = -1;
+      g.items.forEach(function (li, i) {
+        var center = li.getBoundingClientRect().top + MARKER_CENTER;
+        var done = center <= line;
+        li.classList.toggle("is-done", done);
+        if (done) reached = i;
+      });
+      g.items.forEach(function (li, i) {
+        li.classList.toggle("is-active", i === reached);
+      });
     });
   }
 
-  if (stepItems.length && reduceMotion) {
-    stepItems.forEach(function (li) { li.classList.add("is-done"); });
+  if (reduceMotion) {
+    stepGroups.forEach(function (g) {
+      g.items.forEach(function (li) { li.classList.add("is-done"); });
+    });
   }
 
   /* ---------- Unified scroll loop: header, progress, CTA, parallax ---------- */
@@ -201,6 +394,7 @@
     if (!reduceMotion) {
       if (swirl) swirl.style.setProperty("--py", (y * 0.28).toFixed(1) + "px");
       updateSteps(vh);
+      updateRecognition(vh);
     }
   }
   window.addEventListener("scroll", onScroll, { passive: true });
@@ -240,7 +434,7 @@
 
   /* ---------- Magnetic buttons ---------- */
   if (finePointer && !reduceMotion) {
-    document.querySelectorAll(".hero-ctas .btn, .floating-cta").forEach(function (btn) {
+    document.querySelectorAll(".hero-ctas .btn, .floating-cta, .cta-primary").forEach(function (btn) {
       btn.classList.add("magnetic");
       btn.addEventListener("mousemove", function (e) {
         var r = btn.getBoundingClientRect();

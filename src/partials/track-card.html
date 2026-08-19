@@ -1,5 +1,10 @@
 <!-- TrackCard (§3.1). The whole card is the tap target. -->
 <article class="track-card">
+  {{#if img}}
+  <!-- Decorative: the card's own link already covers the whole card, so the
+       image is not a second tap target and carries no alt text. -->
+  <div class="track-media"><img src="{{img}}" alt="" width="800" height="450" loading="lazy" decoding="async"></div>
+  {{/if}}
   <h3 class="track-name"><a href="{{href}}" class="track-link">{{name}}</a></h3>
   <p class="track-desc">{{desc}}</p>
   {{#if who}}<p class="track-who">{{who}}</p>{{/if}}

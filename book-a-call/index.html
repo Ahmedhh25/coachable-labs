@@ -3,20 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Book a 30-Minute Call | Coachable Labs</title>
-<meta name="description" content="A thirty-minute conversation about what is going on and whether coaching is the right instrument for it. No pricing pressure and no obligation.">
+<title>Book a 20-Minute Call | Coachable Labs</title>
+<meta name="description" content="Pick a time for a twenty-minute conversation about what is going on and whether coaching is the right instrument for it. No obligation.">
 <link rel="canonical" href="https://coachablelabs.com/book-a-call/">
 
 
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://coachablelabs.com/book-a-call/">
 <meta property="og:site_name" content="Coachable Labs">
-<meta property="og:title" content="Book a 30-Minute Call | Coachable Labs">
-<meta property="og:description" content="A thirty-minute conversation about what is going on and whether coaching is the right instrument for it. No pricing pressure and no obligation.">
+<meta property="og:title" content="Book a 20-Minute Call | Coachable Labs">
+<meta property="og:description" content="Pick a time for a twenty-minute conversation about what is going on and whether coaching is the right instrument for it. No obligation.">
 <meta property="og:image" content="https://coachablelabs.com/assets/images/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Book a 30-Minute Call | Coachable Labs">
-<meta name="twitter:description" content="A thirty-minute conversation about what is going on and whether coaching is the right instrument for it. No pricing pressure and no obligation.">
+<meta name="twitter:title" content="Book a 20-Minute Call | Coachable Labs">
+<meta name="twitter:description" content="Pick a time for a twenty-minute conversation about what is going on and whether coaching is the right instrument for it. No obligation.">
 <meta name="twitter:image" content="https://coachablelabs.com/assets/images/og-image.png">
 
 <link rel="icon" href="/assets/images/favicon-light.png" media="(prefers-color-scheme: light)">
@@ -99,10 +99,83 @@
 <main id="main">
 
 
+<!-- Order matters on this page. The calendar is what the page is for, so it sits
+     directly under the heading and inside the first screen. Everything
+     explaining the call sits underneath it, for the people who want that before
+     they pick a slot. -->
 <section class="section page-head">
   <div class="container narrow">
-    <h1 class="page-title">Book a 30-minute call</h1>
-    <p class="page-lede">Half an hour on what is going on and where you are trying to get to, so we can both work out whether this is the right instrument for it. If it isn't, we will say so on the call and point you somewhere better.</p>
+    <h1 class="page-title">Book a 20-minute call</h1>
+    <p class="page-lede">Pick a time below. Twenty minutes on what is going on and where you are trying to get to.</p>
+  </div>
+</section>
+
+<!-- [BOOKING TOOL] resolved: Cal.com, cal.com/coachable-labs/consultation.
+     Loader snippet is Cal's own documented inline embed, unmodified.
+
+     Note this is the only third-party script on the site. It loads on page view
+     and sets cookies, so if a cookie notice is ever added, this is the page it
+     has to account for. The direct link and the contact details below sit
+     outside the embed on purpose: if the script is blocked or fails, the page
+     must still give someone a way to book.
+
+     Wider container than the rest of the site: Cal's month view needs the room. -->
+<section class="section booking-section">
+  <div class="container">
+    
+    <div class="booking-embed" id="booking-embed"></div>
+
+    <script>
+      (function (C, A, L) {
+        let p = function (a, ar) { a.q.push(ar); };
+        let d = C.document;
+        C.Cal = C.Cal || function () {
+          let cal = C.Cal;
+          let ar = arguments;
+          if (!cal.loaded) {
+            cal.ns = {};
+            cal.q = cal.q || [];
+            d.head.appendChild(d.createElement("script")).src = A;
+            cal.loaded = true;
+          }
+          if (ar[0] === L) {
+            const api = function () { p(api, arguments); };
+            const namespace = ar[1];
+            api.q = api.q || [];
+            if (typeof namespace === "string") {
+              cal.ns[namespace] = cal.ns[namespace] || api;
+              p(cal.ns[namespace], ar);
+              p(cal, ["initNamespace", namespace]);
+            } else p(cal, ar);
+            return;
+          }
+          p(cal, ar);
+        };
+      })(window, "https://app.cal.com/embed/embed.js", "init");
+
+      Cal("init", "consultation", { origin: "https://cal.com" });
+
+      Cal.ns.consultation("inline", {
+        elementOrSelector: "#booking-embed",
+        calLink: "coachable-labs/consultation",
+        // overlayCalendar lets a booker lay their own calendar over the slots.
+        config: { layout: "month_view", overlayCalendar: "true" }
+      });
+
+      Cal.ns.consultation("ui", {
+        theme: "light",
+        hideEventTypeDetails: false,
+        layout: "month_view",
+        styles: { branding: { brandColor: "#2a8f97" } }
+      });
+    </script>
+    
+
+    <div class="booking-fallback">
+      <p>If the calendar does not load, book directly at
+        <a class="inline-link" href="https://cal.com/coachable-labs/consultation?overlayCalendar=true" rel="noopener">cal.com/coachable-labs/consultation</a>.</p>
+      <p class="quiet">Or email <a class="inline-link" href="mailto:connect@coachablelabs.com">connect@coachablelabs.com</a> and we will offer you a few times.</p>
+    </div>
   </div>
 </section>
 
@@ -111,36 +184,16 @@
     <h2 class="section-heading">What happens on it</h2>
     <ul class="dot-list">
       <li>You talk, mostly. We ask about the situation rather than about your goals.</li>
-      <li>We take one real thing you are dealing with and work it through with the framework, so you can see how the sessions actually run.</li>
-      <li>If it is a fit, we scope the work and agree a fee afterwards. Nothing is charged before or during this call.</li>
+      <li>We take one real thing you are dealing with and work it through, so you can see how a session actually runs.</li>
+      <li>Nothing is charged before or during the call. If it isn't a fit, we say so and point you somewhere better.</li>
     </ul>
-  </div>
-</section>
-
-<!-- [BOOKING TOOL] — unresolved. Which scheduler powers this page (Calendly,
-     Cal.com, SavvyCal, something custom) affects the embed, its mobile height and
-     how consent is handled, so nothing is embedded here yet.
-
-     When it is decided: put the embed inside the block below, set bookingEmbed to
-     true in src/site.json, and check it at 320px with the keyboard open. Keep the
-     email and phone fallback underneath it either way — an embed that fails to
-     load must not leave the page with no way to reach anyone. -->
-<section class="section booking-section">
-  <div class="container narrow">
-    
-    <div class="booking-fallback">
-      <h2 class="section-heading">To book one</h2>
-      <p>Email <a href="mailto:connect@coachablelabs.com">connect@coachablelabs.com</a> or call <a href="tel:+19197571979">+1 (919) 757-1979</a> and we will offer you a few times.</p>
-      <p class="quiet">[BOOKING TOOL] &mdash; the scheduler for this page has not been chosen yet, so there is nothing to embed. See the comment in src/pages/book-a-call.html.</p>
-    </div>
-    
   </div>
 </section>
 
 <section class="section">
   <div class="container narrow">
     <h2 class="section-heading">Not ready for a call?</h2>
-    <p>Most people aren't, and that is the more common way in. Write down what is going on and send it — a person reads it and comes back within two working days, and nothing about that commits you to a call.</p>
+    <p>Most people aren't, and that is the more common way in. Write down what is going on and send it. A person reads it and comes back within two working days.</p>
     <p><a href="/start/" class="btn btn-teal">Tell us what's going on <span class="arrow">&#8599;</span></a></p>
   </div>
 </section>
@@ -151,7 +204,7 @@
   <div class="container footer-inner">
     <div class="footer-brand">
       <p class="footer-name">Coachable Labs</p>
-      <p class="footer-desc">One-to-one coaching across career, money, health<br>and the people closest to you. Six sessions,<br>a set arc, and an end date.</p>
+      <p class="footer-desc">Destination-driven one-to-one coaching<br>across goals, career, health, money<br>and the people closest to you.</p>
     </div>
 
     <div class="footer-cols">
@@ -176,7 +229,6 @@
       <div class="footer-col">
         <p class="footer-col-title">Contact</p>
         <a href="mailto:connect@coachablelabs.com">connect@coachablelabs.com</a>
-        <a href="tel:+19197571979">+1 (919) 757-1979</a>
         <p class="footer-note">Raleigh, Durham and Chapel Hill, plus nationwide online.</p>
         <a href="/contact/">Contact page</a>
       </div>
@@ -185,7 +237,7 @@
         <p class="footer-col-title">Get Started</p>
         <p class="footer-note">Tell us what is going on. We read every one of these and come back within two working days.</p>
         <a href="/start/" class="btn btn-teal btn-sm">Get Started</a>
-        <a href="/book-a-call/" class="footer-quiet-link">Or book a 30-minute call</a>
+        <a href="/book-a-call/" class="footer-quiet-link">Or book a 20-minute call</a>
       </div>
     </div>
   </div>

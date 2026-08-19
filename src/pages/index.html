@@ -2,8 +2,8 @@
   "route": "/",
   "nav": "",
   "bodyClass": "page-home",
-  "title": "Coachable Labs — Life Coaching in Six Sessions | Raleigh & Online",
-  "description": "Structured one-to-one coaching across career, money, health and relationships — six sessions, a set arc, and an end date. Raleigh-Durham and nationwide online.",
+  "title": "Coachable Labs: One-to-One Life Coaching | Raleigh & Online",
+  "description": "Structured one-to-one coaching across career, money, health and relationships. A set arc, scoped to your situation, that finishes. Raleigh-Durham and nationwide online.",
   "schema": [
     {
       "@context": "https://schema.org",
@@ -12,8 +12,7 @@
       "url": "https://coachablelabs.com/",
       "logo": "https://coachablelabs.com/assets/images/logo-mark.png",
       "email": "connect@coachablelabs.com",
-      "telephone": "+1-919-757-1979",
-      "description": "One-to-one coaching across career, money, health and relationships, in six sessions with a stated end date."
+      "description": "One-to-one coaching across career, money, health and relationships, across a set arc that finishes rather than running indefinitely."
     },
     {
       "@context": "https://schema.org",
@@ -22,8 +21,6 @@
       "name": "Coachable Labs",
       "url": "https://coachablelabs.com/",
       "email": "connect@coachablelabs.com",
-      "telephone": "+1-919-757-1979",
-      "priceRange": "$500-$1500",
       "areaServed": [
         { "@type": "City", "name": "Raleigh", "addressRegion": "NC" },
         { "@type": "City", "name": "Durham", "addressRegion": "NC" },
@@ -35,7 +32,7 @@
   ]
 }-->
 
-<!-- H-1 — Hero. The gating eyebrow that used to sit above the headline is gone:
+<!-- H-1 - Hero. The gating eyebrow that used to sit above the headline is gone:
      it was the first thing a referred visitor read and it worked against the referral. -->
 <section class="hero" id="top">
   <div class="hero-swirl" aria-hidden="true">
@@ -71,33 +68,40 @@
   </div>
 
   <div class="container hero-inner">
-    <h1 class="hero-title reveal">Coaching for the parts of life nobody sits down and plans</h1>
-    <p class="hero-sub reveal">One-to-one coaching that takes your career, your money, your health and the people closest to you as one situation rather than four separate ones. Six sessions, a set arc, and an end date agreed before you start.</p>
+    <!-- One size throughout, set left and given a wide measure so 25 words can
+         spread across the page rather than stacking up centred. -->
+    <h1 class="hero-title reveal">Most people build their life in pieces: career here, health there, faith somewhere else. We start with where all of it is supposed to lead.</h1>
+    <p class="hero-sub reveal">One-to-one coaching that starts with the destination rather than the symptom. Once you can say what your life is actually for, the decisions about your goals, your career, your health, your money and the people closest to you stop competing with each other and start pointing the same way.</p>
     <div class="hero-ctas reveal">
       <a href="/start/" class="btn btn-teal">Tell us what's going on <span class="arrow">&#8599;</span></a>
-      <a href="/book-a-call/" class="hero-quiet-link">Or book a 30-minute call</a>
+      <a href="/book-a-call/" class="hero-quiet-link">Or book a 20-minute call</a>
     </div>
   </div>
 </section>
 
-<!-- H-2 — Who this is for. Situations a visitor recognises, not criteria they are measured against. -->
+<!-- H-2 - Who this is for. Situations a visitor recognises, not criteria they are measured against. -->
 <section class="section recognition-section">
   <div class="container narrow">
     <h2 class="section-heading">You might recognise this</h2>
     <ul class="recognition-list">
-      <li class="reveal">A marriage that runs like a household and stopped feeling like a marriage.</li>
-      <li class="reveal">A career you chose by default and have never sat down and questioned.</li>
-      <li class="reveal">A decision about a major or a move, and nobody neutral to talk it through with.</li>
-      <li class="reveal">Success that arrived on schedule and somehow didn't land.</li>
+      <!-- The <em> marks the turn in each line: the clause the whole sentence is
+           built to land on. A teal marker sweeps across it as the row arrives.
+           Wording is unchanged. -->
+      <li>A marriage that runs like a household and <em>stopped feeling like a marriage</em>.</li>
+      <li>A career you never really chose, and <em>never stopped to question</em>.</li>
+      <li>A number in the account that was <em>supposed to mean something by now</em>.</li>
+      <li>Success that arrived exactly on schedule and <em>didn't feel like anything</em>.</li>
     </ul>
   </div>
 </section>
 
-<!-- H-2b — Proof.
+<!-- H-2b - Proof.
      TESTIMONIALS: the twelve graduates have before-and-after assessments; the quotes
-     themselves are not in hand. The slots below stay empty until they are — see
+     themselves are not in hand. The slots below stay empty until they are. See
      src/partials/testimonial.html. Flip site.json testimonialsReady when they land.
-     The interest figure is stated as what it measures: interest, not results. -->
+
+     The cold-audience interest figure that used to sit here has been removed. Until
+     the graduate quotes land, the credential below is the only proof on this page. -->
 <section class="section proof-section">
   <div class="container narrow">
     {{#if testimonialsReady}}
@@ -106,40 +110,74 @@
       {{> testimonial quote="" name="" who="" change=""}}
     </div>
     {{/if}}
-    <p class="proof-figure reveal"><strong>Eighteen of twenty people</strong> who had never heard of us said they wanted this after one conversation about it. That is a measure of interest, not of outcomes — the outcomes are what the six sessions are for.</p>
+
+    <!-- The one authority signal that needs no photograph. Two figures rather than
+         one: depth over time, then breadth across the team. The full coach block
+         is still gated on [COACH PHOTOS]. -->
+    <div class="credential-row">
+      <div class="credential">
+        <span class="credential-figure">17 years</span>
+        <span class="credential-label">of experience</span>
+      </div>
+      <div class="credential">
+        <span class="credential-figure">35+ years</span>
+        <span class="credential-label">across the team, with young people in Raleigh, Durham and Chapel Hill</span>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- H-3 — The five tracks. Five, stated once, the same five on every page that lists them. -->
+<!-- H-3 - The five tracks. Five, stated once, the same five on every page that lists them. -->
 <section class="section tracks-section" id="services">
   <div class="container">
     <h2 class="section-heading center">Five ways to work with us</h2>
     <div class="track-grid" id="packages">
-      {{> track-card name="Individual" href="/coaching/individual/" desc="Six sessions on purpose, health, money and the people around you." tag1="Purpose" tag2="Habits" tag3="Direction"}}
-      {{> track-card name="Marriage" href="/coaching/marriage/" desc="Before the wedding or years in — individual and joint sessions." tag1="Expectations" tag2="Money" tag3="Communication"}}
-      {{> track-card name="Family" href="/coaching/family/" desc="Boundaries, long-standing tension, the conversations nobody starts." tag1="Boundaries" tag2="Parenting" tag3="Candor"}}
-      {{> track-card name="Career" href="/coaching/career/" desc="Choosing a direction, leaving a role, staying relevant as work changes." tag1="Direction" tag2="Relevance" tag3="Exits"}}
-      {{> track-card name="Leaders" href="/coaching/leaders/" desc="For founders whose organisation outgrew the story it started with." tag1="Identity" tag2="Strategy" tag3="Systems"}}
+      {{> track-card name="Individual" href="/coaching/individual/" img="/assets/images/life-path.jpg" desc="Purpose, health, money and the people around you, worked as one." tag1="Purpose" tag2="Direction"}}
+      {{> track-card name="Marriage" href="/coaching/marriage/" img="/assets/images/carousel-couple.jpg" desc="Before the wedding or years in. Individual and joint sessions." tag1="Expectations" tag2="Money"}}
+      {{> track-card name="Family" href="/coaching/family/" img="/assets/images/photo-1.jpg" desc="Boundaries, long-standing tension, the conversations nobody starts." tag1="Boundaries" tag2="Parenting"}}
+      {{> track-card name="Career" href="/coaching/career/" img="/assets/images/carousel-career.jpg" desc="Choosing a direction, leaving a role, staying relevant as work changes." tag1="Direction" tag2="Exits"}}
+      {{> track-card name="Leaders" href="/coaching/leaders/" img="/assets/images/photo-2.jpg" desc="For founders whose organisation outgrew the story it started with." tag1="Strategy" tag2="Systems"}}
     </div>
-    <p class="tracks-note center reveal">Not sure which one? <a href="/start/">Say so on the form</a> — most people don't arrive knowing.</p>
+    <p class="tracks-note center reveal">Not sure which one? <a href="/start/">Say so on the form</a>. Most people don't arrive knowing.</p>
   </div>
 </section>
 
-<!-- H-4 — How it works, condensed. The full process lives on /how-it-works/. -->
+<!-- H-4 - How it works, condensed. The full process lives on /how-it-works/. -->
 <section class="section steps-condensed" id="process">
   <div class="container narrow">
     <h2 class="section-heading">How it works</h2>
-    <ol class="steps-compact">
-      <li class="reveal"><span class="step-n">1</span> You tell us what is going on.</li>
-      <li class="reveal"><span class="step-n">2</span> A thirty-minute call, to work out what you actually need.</li>
-      <li class="reveal"><span class="step-n">3</span> We scope the work and agree a fee.</li>
-      <li class="reveal"><span class="step-n">4</span> The engagement runs, and then it ends.</li>
-    </ol>
+    <!-- Same scroll-driven spine as /how-it-works/, one line per step rather than
+         a paragraph. The markers are hollow until the fill reaches them. -->
+    <div class="step-wrap">
+      <div class="step-spine" aria-hidden="true"><span class="step-spine-fill"></span></div>
+      <ol class="step-list">
+        <li class="reveal"><h3>You tell us what is going on</h3></li>
+        <li class="reveal"><h3>A twenty-minute call, to work out what you actually need</h3></li>
+        <li class="reveal"><h3>We scope the work and agree a fee</h3></li>
+        <li class="reveal"><h3>The engagement runs, and then it ends</h3></li>
+      </ol>
+    </div>
     <p class="reveal"><a class="inline-link" href="/how-it-works/">The whole process, including what it costs</a></p>
   </div>
 </section>
 
-<!-- H-5 — Who you would work with.
+<!-- Filtering, deliberately placed before the CTA. The site should not answer
+     every objection away: someone who wants encouragement should be able to work
+     out from this page that they are in the wrong place. -->
+<section class="section demand-section">
+  <div class="container narrow">
+    <h2 class="section-heading">It only works if you do</h2>
+    <p>Worth being straight about this before you write to us.</p>
+    <ul class="dot-list">
+      <li>There is work between every session, and that is the part that decides whether anything changes.</li>
+      <li>You will be challenged on things you have been explaining away for years.</li>
+      <li>The feedback is direct. Nobody here is going to tell you that you are doing fine.</li>
+      <li>If what you want is agreement, this is an expensive way to get it.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- H-5 - Who you would work with.
      [COACH PHOTOS] outstanding. This block is suppressed until site.json
      coachesReady is true, so the page never ships with placeholder people in it. -->
 {{#if coachesReady}}
@@ -155,5 +193,5 @@
 </section>
 {{/if}}
 
-<!-- H-6 — CTABlock -->
-{{> cta-block ctaHeading="Tell us what is going on." ctaBody="A short form, read by a person. We come back within two working days, and nothing commits you to anything."}}
+<!-- H-6 - CTABlock -->
+{{> cta-block ctaHeading="Tell us what is going on." ctaBody="A short form, read by a person. We come back within two working days."}}

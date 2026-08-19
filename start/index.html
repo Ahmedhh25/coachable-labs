@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Get Started — Tell Us What's Going On | Coachable Labs</title>
+<title>Get Started: Tell Us What's Going On | Coachable Labs</title>
 <meta name="description" content="Tell us what you are dealing with and we will come back to you. A short form, read by a person, with no obligation to book anything.">
 <link rel="canonical" href="https://coachablelabs.com/start/">
 
@@ -11,11 +11,11 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://coachablelabs.com/start/">
 <meta property="og:site_name" content="Coachable Labs">
-<meta property="og:title" content="Get Started — Tell Us What's Going On | Coachable Labs">
+<meta property="og:title" content="Get Started: Tell Us What's Going On | Coachable Labs">
 <meta property="og:description" content="Tell us what you are dealing with and we will come back to you. A short form, read by a person, with no obligation to book anything.">
 <meta property="og:image" content="https://coachablelabs.com/assets/images/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Get Started — Tell Us What's Going On | Coachable Labs">
+<meta name="twitter:title" content="Get Started: Tell Us What's Going On | Coachable Labs">
 <meta name="twitter:description" content="Tell us what you are dealing with and we will come back to you. A short form, read by a person, with no obligation to book anything.">
 <meta name="twitter:image" content="https://coachablelabs.com/assets/images/og-image.png">
 
@@ -100,77 +100,114 @@
 
 
 <section class="section start-section">
-  <div class="container narrow">
-    <!-- S-1 — Intro -->
-    <h1 class="page-title">Tell us what's going on</h1>
-    <p class="page-lede">Write it in your own words, in as much detail as you want. A person reads every one of these and comes back to you within two working days.</p>
-    <p class="page-lede">Sending this does not commit you to a call or to anything else.</p>
+  <div class="container">
 
-    <!-- S-2 — Form.
-         [FORM BACKEND] resolved: this is the Formspree endpoint the existing site
-         already posts to (formspree.io/f/xnjeoqzo), carried over unchanged along
-         with its submit handler in js/main.js. -->
-    <form class="intake-form" id="intake-form" action="https://formspree.io/f/xnjeoqzo" method="POST" novalidate>
-      <div class="form-row">
-        <div class="form-field">
-          <label for="fname">First name <span class="field-optional">(optional)</span></label>
-          <input type="text" id="fname" name="firstName" autocomplete="given-name">
-        </div>
-        <div class="form-field">
-          <label for="lname">Last name <span class="field-optional">(optional)</span></label>
-          <input type="text" id="lname" name="lastName" autocomplete="family-name">
-        </div>
-      </div>
-
-      <div class="form-row">
-        <div class="form-field">
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" inputmode="email" autocomplete="email" required aria-describedby="email-error">
-          <p class="field-error" id="email-error" hidden></p>
-        </div>
-        <div class="form-field">
-          <label for="phone">Phone <span class="field-optional">(optional)</span></label>
-          <input type="tel" id="phone" name="phone" inputmode="tel" autocomplete="tel">
-        </div>
-      </div>
-
-      <div class="form-field">
-        <label for="about">What is this about</label>
-        <select id="about" name="about">
-          <option value="Not sure yet" selected>Not sure yet</option>
-          <option value="Individual">Individual coaching</option>
-          <option value="Marriage">Marriage or pre-marital</option>
-          <option value="Family">Family and parenting</option>
-          <option value="Career">Career and direction</option>
-          <option value="Leaders">Founders and leaders</option>
-        </select>
-        <p class="field-help">Most people pick "not sure yet". That is genuinely fine — working it out is part of the call.</p>
-      </div>
-
-      <div class="form-field">
-        <label for="message">What's going on</label>
-        <textarea id="message" name="message" rows="7" required aria-describedby="message-error"></textarea>
-        <p class="field-error" id="message-error" hidden></p>
-      </div>
-
-      <button type="submit" class="btn btn-teal btn-block form-submit">Send this</button>
-      <p class="form-status" id="form-status" role="status"></p>
-    </form>
-
-    <!-- Inline confirmation. Replaces the form in place — no redirect, no alert. -->
-    <div class="form-confirm" id="form-confirm" hidden tabindex="-1">
-      <h2 class="confirm-heading">That's with us.</h2>
-      <p>A person will read it and come back to you within two working days.</p>
-      <p>The next step is a thirty-minute conversation — we'll offer you a few times when we reply. If it turns out we are the wrong instrument for this, we will say so on that call and point you somewhere better.</p>
-      <p class="confirm-alt">If it is urgent, email <a href="mailto:connect@coachablelabs.com">connect@coachablelabs.com</a> or call <a href="tel:+19197571979">+1 (919) 757-1979</a>.</p>
+    <!-- S-1 - Intro -->
+    <div class="start-head">
+      <h1 class="page-title">Tell us what's going on</h1>
+      <p class="page-lede">Write it in your own words, in as much detail as you want. A person reads every one of these and comes back to you within two working days.</p>
     </div>
 
-    <!-- S-3 — Reassurance -->
-    <ul class="reassurance-list">
-      <li>What you write here is read by a coach and by nobody else.</li>
-      <li>Private-pay: there is no insurance claim, no diagnosis, and no file with your name on it.</li>
-      <li>You are not signing up for anything by sending this.</li>
-    </ul>
+    <!-- The form comes first in source order, so on a phone it is the first thing
+         under the heading rather than sitting below a column of reassurance. -->
+    <div class="start-grid">
+
+      <div class="form-card">
+        <!-- S-2 - Form.
+             [FORM BACKEND] resolved: this is the Formspree endpoint the existing
+             site already posts to, carried over unchanged along with its submit
+             handler in js/main.js. -->
+        <form class="intake-form" id="intake-form" action="https://formspree.io/f/xnjeoqzo" method="POST" novalidate>
+          <div class="form-row">
+            <div class="form-field">
+              <label for="fname">First name <span class="field-optional">(optional)</span></label>
+              <input type="text" id="fname" name="firstName" autocomplete="given-name">
+            </div>
+            <div class="form-field">
+              <label for="lname">Last name <span class="field-optional">(optional)</span></label>
+              <input type="text" id="lname" name="lastName" autocomplete="family-name">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-field">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" inputmode="email" autocomplete="email" required aria-describedby="email-error">
+              <p class="field-error" id="email-error" hidden></p>
+            </div>
+            <div class="form-field">
+              <label for="phone">Phone <span class="field-optional">(optional)</span></label>
+              <input type="tel" id="phone" name="phone" inputmode="tel" autocomplete="tel">
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="about">What is this about</label>
+            <div class="select-wrap">
+              <select id="about" name="about">
+                <option value="Not sure yet" selected>Not sure yet</option>
+                <option value="Individual">Individual coaching</option>
+                <option value="Marriage">Marriage or pre-marital</option>
+                <option value="Family">Family and parenting</option>
+                <option value="Career">Career and direction</option>
+                <option value="Leaders">Founders and leaders</option>
+              </select>
+            </div>
+            <p class="field-help">Most people pick "not sure yet". That is genuinely fine, and working it out is part of the call.</p>
+          </div>
+
+          <div class="form-field">
+            <label for="message">What's going on</label>
+            <textarea id="message" name="message" rows="7" required aria-describedby="message-error"></textarea>
+            <p class="field-error" id="message-error" hidden></p>
+          </div>
+
+          <button type="submit" class="btn btn-teal btn-block form-submit">Send this <span class="arrow">&#8599;</span></button>
+          <p class="form-status" id="form-status" role="status"></p>
+        </form>
+
+        <!-- Inline confirmation. Replaces the form in place: no redirect, no alert. -->
+        <div class="form-confirm" id="form-confirm" hidden tabindex="-1">
+          <span class="confirm-tick" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="26" height="26"><path d="M4 12.5 9.5 18 20 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <h2 class="confirm-heading">That's with us.</h2>
+          <p>A person will read it and come back to you within two working days.</p>
+          <p>The next step is a twenty-minute conversation, and we'll offer you a few times when we reply. If it turns out we are the wrong instrument for this, we will say so on that call and point you somewhere better.</p>
+          <p class="confirm-alt">If it is urgent, say so in the message or email <a href="mailto:connect@coachablelabs.com">connect@coachablelabs.com</a>.</p>
+        </div>
+      </div>
+
+      <aside class="start-aside">
+        <div class="aside-card">
+          <h2 class="aside-title">What happens next</h2>
+          <ol class="start-steps">
+            <li>
+              <span class="start-step-n">1</span>
+              <span class="start-step-copy"><strong>This form</strong>Two minutes, and nothing is committed.</span>
+            </li>
+            <li>
+              <span class="start-step-n">2</span>
+              <span class="start-step-copy"><strong>A twenty-minute call</strong>We offer you times when we reply.</span>
+            </li>
+            <li>
+              <span class="start-step-n">3</span>
+              <span class="start-step-copy"><strong>Session one</strong>Only if it is a fit, and only if you want it.</span>
+            </li>
+          </ol>
+        </div>
+
+        <!-- S-3 - Reassurance -->
+        <ul class="reassurance-list">
+          <li>What you write here is read by a coach and by nobody else.</li>
+          <li>Private-pay: there is no insurance claim, no diagnosis, and no file with your name on it.</li>
+          <li>Sending this does not commit you to a call or to anything else.</li>
+        </ul>
+
+        <p class="aside-alt">Would rather just book a time? <a class="inline-link" href="/book-a-call/">Book a 20-minute call</a>.</p>
+      </aside>
+
+    </div>
   </div>
 </section>
 
@@ -180,7 +217,7 @@
   <div class="container footer-inner">
     <div class="footer-brand">
       <p class="footer-name">Coachable Labs</p>
-      <p class="footer-desc">One-to-one coaching across career, money, health<br>and the people closest to you. Six sessions,<br>a set arc, and an end date.</p>
+      <p class="footer-desc">Destination-driven one-to-one coaching<br>across goals, career, health, money<br>and the people closest to you.</p>
     </div>
 
     <div class="footer-cols">
@@ -205,7 +242,6 @@
       <div class="footer-col">
         <p class="footer-col-title">Contact</p>
         <a href="mailto:connect@coachablelabs.com">connect@coachablelabs.com</a>
-        <a href="tel:+19197571979">+1 (919) 757-1979</a>
         <p class="footer-note">Raleigh, Durham and Chapel Hill, plus nationwide online.</p>
         <a href="/contact/">Contact page</a>
       </div>
@@ -214,7 +250,7 @@
         <p class="footer-col-title">Get Started</p>
         <p class="footer-note">Tell us what is going on. We read every one of these and come back within two working days.</p>
         <a href="/start/" class="btn btn-teal btn-sm">Get Started</a>
-        <a href="/book-a-call/" class="footer-quiet-link">Or book a 30-minute call</a>
+        <a href="/book-a-call/" class="footer-quiet-link">Or book a 20-minute call</a>
       </div>
     </div>
   </div>

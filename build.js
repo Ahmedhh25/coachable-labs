@@ -198,6 +198,11 @@ function build() {
     pending.push("testimonialsReady=false — testimonial slots on / and the service pages are");
     pending.push("                          empty. Real quotes from the twelve graduates needed.");
   }
+  if (!site.priceReady) {
+    pending.push("priceReady=false - no fee is published anywhere: not on /how-it-works/, not in");
+    pending.push("                  the FAQ, not in the LocalBusiness schema. The $500-$1,500 range");
+    pending.push("                  in the brief was wrong and was removed. [PRICING] outstanding.");
+  }
   if (!site.bookingEmbed) {
     pending.push("bookingEmbed unset — /book-a-call/ shows the email fallback, not a scheduler.");
     pending.push("                     [BOOKING TOOL] outstanding.");
